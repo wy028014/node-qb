@@ -1,0 +1,7 @@
+export { Department } from "./department.model"
+export { Level } from "./level.model"
+export { Menu } from "./menu.model"
+export { Person } from "./person.model"
+export { Person2Department } from "./person2department.model"
+export { User } from "./user.model";
+export { User2Menu } from "./user2menu.model"

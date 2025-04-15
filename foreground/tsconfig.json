@@ -1,0 +1,59 @@
+{
+    // 编译器选项，用于控制 TypeScript 编译器的行为
+    "compilerOptions": {
+        // 允许从没有默认导出的模块中默认导入，对于一些 CommonJS 模块很有用
+        "allowSyntheticDefaultImports": true,
+        // 解析非相对模块名时的基准目录
+        "baseUrl": ".",
+        // 生成源映射文件，方便调试时定位源代码
+        "sourceMap": true,
+        // 生成的 JavaScript 文件的目标版本
+        "target": "ESNext",
+        // 模块解析策略，node 是常见的 Node.js 模块解析方式
+        "moduleResolution": "node",
+        // 指定生成的模块格式
+        "module": "ESNext",
+        // 启用严格类型检查模式，开启多个严格类型检查选项
+        "strict": true,
+        // 启用所有严格的空值检查，确保变量不会为 null 或 undefined
+        "strictNullChecks": true,
+        // 启用严格的函数类型检查
+        "strictFunctionTypes": true,
+        // 启用严格的属性初始化检查
+        "strictPropertyInitialization": true,
+        // 启用严格的绑定检查
+        "strictBindCallApply": true,
+        // 禁用隐式的 any 类型，要求显式声明类型
+        "noImplicitAny": true,
+        // 禁用隐式的 this 为 any 类型
+        "noImplicitThis": true,
+        // 当存在错误时不生成输出文件
+        "noEmitOnError": true,
+        // 生成代码时不包含源文件路径
+        "stripInternal": true,
+        // 启用实验性的装饰器支持，用于一些高级特性
+        "experimentalDecorators": true,
+        // 支持 ESNext 模块语法
+        "esModuleInterop": true,
+        // 生成代码时不包含辅助函数，依赖外部的 tslib 库
+        "importHelpers": true,
+        // 启用路径映射，这里定义了 @ 指向 src 目录
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        // 跳过对 .d.ts 文件的类型检查
+        "skipLibCheck": true
+    },
+    // 包含的文件或目录，指定需要进行编译的文件范围
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.vue",
+    ],
+    // 排除的文件或目录，指定不需要进行编译的文件范围
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
