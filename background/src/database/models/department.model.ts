@@ -1,20 +1,17 @@
-import { BelongsTo, HasMany, Column, DataType, Index, Model, Table } from "sequelize-typescript";
+import { BelongsTo, HasMany, Column, DataType, Index, Model, Table, PrimaryKey, Default } from "sequelize-typescript";
 import { Level, Person2Department } from ".";
 
 @Table({ tableName: `w_department`, timestamps: true, comment: `部门信息表` })
 export class Department extends Model {
-  declare id: string;
   @Column({
     allowNull: false,
     comment: `UUID`,
     defaultValue: DataType.UUIDV4,
-    field: `id`,
+    field: `uid`,
     primaryKey: true,
     type: DataType.STRING
   })
-  setId(value: string) {
-    this.id = value;
-  }
+  uid: string;
 
   @Column({
     allowNull: true,

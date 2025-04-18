@@ -1,10 +1,24 @@
-import { BelongsTo,  Column, DataType, ForeignKey, Index, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Index, Model, Table } from "sequelize-typescript";
 import { Department, Person } from ".";
-
 import { encryption } from "@/utils/bcryptjs.utils";
+
+export enum UserType {
+  PERSON = `person`,
+  DEPARTMENT = `department`,
+}
 
 @Table({ tableName: `w_user`, timestamps: true, comment: `用户表` })
 export class User extends Model {
+  @Column({
+    allowNull: false,
+    comment: `UUID`,
+    defaultValue: DataType.UUIDV4,
+    field: `uid`,
+    primaryKey: true,
+    type: DataType.STRING
+  })
+  uid: string;
+
   @Column({
     allowNull: false,
     comment: `用户名`,
@@ -29,7 +43,7 @@ export class User extends Model {
     comment: `类型`,
     defaultValue: `person`,
     field: `classification`,
-    type: DataType.ENUM(`person`, `department`),
+    type: DataType.ENUM(...Object.values(UserType)),
   })
   @Index(`index_classification`)
   classification!: string;

@@ -1,6 +1,8 @@
 {
 	"scripts": {
-		"start": "concurrently \"pnpm --filter front dev\" \"pnpm --filter back start:dev\""
+		"b": "pnpm --filter background start:dev",
+		"f": "pnpm --filter foreground dev",
+		"dev": "concurrently \"pnpm --filter foreground dev\" \"pnpm --filter background start:dev\""
 	},
 	"devDependencies": {
 		"concurrently": "^9.1.2"

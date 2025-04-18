@@ -12,7 +12,7 @@ import {
 
 @Table({ tableName: `w_person`, timestamps: true, comment: `个人信息表` })
 export class Person extends Model {
-  declare id: string;
+  d
   @Column({
     allowNull: false,
     comment: `UUID`,
@@ -21,9 +21,7 @@ export class Person extends Model {
     primaryKey: true,
     type: DataType.STRING
   })
-  setId(value: string) {
-    this.id = value;
-  }
+  uid: string;
 
   @Column({
     allowNull: true,

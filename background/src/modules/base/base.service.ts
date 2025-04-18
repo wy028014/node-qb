@@ -3,13 +3,14 @@ import { JwtService } from "@nestjs/jwt";
 import * as svgCaptcha from "svg-captcha";
 import config from "@/config";
 import dayjs from "@/utils/dayjs.utils";
+
 @Injectable()
 export class BaseService {
   constructor(private readonly jwtService: JwtService) { }
 
   async create(id: string, classification: string): Promise<{ token_access: string; token_refresh: string }> {
-    const token_access: string = this.jwtService.sign({ id, classification }, { expiresIn: config.jwt.signOptions.expiresIn, secret: config.jwt.secret });
-    const token_refresh: string = this.jwtService.sign({ id, classification }, { expiresIn: config.jwt.signOptions.expiresIn as number * 24, secret: config.jwt.secret });
+    const token_access: string = this.jwtService.sign({ id, classification }, { expiresIn: config.jwt.signOptions!.expiresIn, secret: config.jwt.secret });
+    const token_refresh: string = this.jwtService.sign({ id, classification }, { expiresIn: config.jwt.signOptions!.expiresIn as number * 24, secret: config.jwt.secret });
     return { token_access, token_refresh };
   }
 
