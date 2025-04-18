@@ -1,11 +1,12 @@
-import { Controller, Get, Redirect, Res } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-@ApiTags(`入口`)
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
 @Controller()
 export class AppController {
+  constructor(private readonly appService: AppService) {}
+
   @Get()
-  @Redirect(`http://127.0.0.1:3000/api/`, 302)
-  index(@Res() res: any): void {
-    // res.sendFile("index.html", { root: "./public/dist" });
+  getHello(): string {
+    return this.appService.getHello();
   }
 }
