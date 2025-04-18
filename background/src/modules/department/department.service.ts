@@ -25,7 +25,7 @@ export class DepartmentService {
   }
   async update(updateDepartmentDto: UpdateDepartmentDto): Promise<number[]> {
     return await this.departmentModel.update(updateDepartmentDto, {
-      where: { id: updateDepartmentDto.id },
+      where: { id: updateDepartmentDto.uid },
     });
   }
   async remove(id: string[]): Promise<number> {

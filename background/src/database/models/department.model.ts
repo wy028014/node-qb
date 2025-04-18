@@ -1,6 +1,13 @@
 import { BelongsTo, HasMany, Column, DataType, Index, Model, Table, PrimaryKey, Default } from "sequelize-typescript";
 import { Level, Person2Department } from ".";
 
+export enum DepartmentType {
+  DANGWEI = `党委`,
+  ZONGHEGUANLI = `综合管理`,
+  YEWUZHIDAO = `业务指导`,
+  JICENGSUODUI = `基层所队`,
+}
+
 @Table({ tableName: `w_department`, timestamps: true, comment: `部门信息表` })
 export class Department extends Model {
   @Column({
@@ -27,7 +34,7 @@ export class Department extends Model {
     comment: `类型`,
     defaultValue: `基层所队`,
     field: `classification`,
-    type: DataType.ENUM(`党委`, `综合管理`, `业务指导`, `基层所队`),
+        type: DataType.ENUM(...Object.values(DepartmentType)),
   })
   @Index(`index_classification`)
   classification!: string;

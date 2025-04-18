@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";

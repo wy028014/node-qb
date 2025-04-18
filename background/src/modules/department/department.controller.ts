@@ -63,7 +63,6 @@ export class DepartmentController {
             include.push({
               model: Person,
               through: {
-                model: Person2Department,
                 attributes: [] // 可以根据需要添加中间表的属性
               },
               as: `persons`,
@@ -102,7 +101,6 @@ export class DepartmentController {
     if (queryDepartmentDto.personId) {
       include.push({
         model: Person,
-        through: Person2Department, // 直接传入模型类
         as: `persons`,
         attributes: { exclude: [`createdAt`, `updatedAt`, `deletedAt`] },
         where: { id: queryDepartmentDto.personId },

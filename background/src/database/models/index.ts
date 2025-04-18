@@ -1,4 +1,4 @@
-export { Department } from "./department.model"
+export { Department, DepartmentType } from "./department.model"
 export { Level } from "./level.model"
 export { Menu } from "./menu.model"
 export { Person } from "./person.model"

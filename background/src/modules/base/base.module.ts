@@ -11,5 +11,6 @@ import { PersonService } from "../person/person.service";
   controllers: [BaseController],
   imports: [SequelizeModule.forFeature([Department, Person, User])],
   providers: [BaseService, DepartmentService, JwtService, PersonService, UserService],
+  exports: [BaseService]
 })
 export class BaseModule { }

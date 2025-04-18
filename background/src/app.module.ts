@@ -19,7 +19,6 @@ import {
   // RankModule,
   // UserModule,
 } from "%/index";
-import { BaseService } from "%/base/base.service";
 @Module({
   controllers: [AppController],
   imports: [
