@@ -6,7 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/common/entities/base.entity.ts
  * @Description: 基础 实体类
  */
-import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn, BaseEntity } from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn, BaseEntity } from "typeorm";
 
 export abstract class baseEntity extends BaseEntity {
     @CreateDateColumn()

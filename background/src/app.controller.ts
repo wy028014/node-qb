@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+/*
+ * @Author: 王野 18545455617@163.com
+ * @Date: 2025-04-18 11:00:05
+ * @LastEditors: 王野 18545455617@163.com
+ * @LastEditTime: 2025-04-18 14:08:09
+ * @FilePath: /nodejs-qb/background/src/app.controller.ts
+ * @Description: 控制层 app
+ */
+import { Controller, Get, Redirect } from "@nestjs/common";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  @Redirect(`http://127.0.0.1:3000/api/`, 302)
+  index(): void { }
 }
