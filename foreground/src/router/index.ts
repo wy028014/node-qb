@@ -59,7 +59,7 @@ const router = createRouter({
     routes
 });
 
-// 全局前置守卫，先验证登录，再验证权限
+// 全局前置守卫, 先验证登录, 再验证权限
 router.beforeEach(authGuard);
 router.beforeEach(permissionGuard);
 

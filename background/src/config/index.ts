@@ -10,7 +10,7 @@ const databaseConfig: TypeOrmModuleOptions = {
     password: `root`,
     database: `workstation`,
     entities: [__dirname + `/../**/*.entity{.ts,.js}`],
-    synchronize: true, // 开发环境使用，生产环境建议关闭
+    synchronize: true, // 开发环境使用, 生产环境建议关闭
     logging: true,
     charset: `utf8mb4`,
     timezone: `+08:00`,

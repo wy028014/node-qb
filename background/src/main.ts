@@ -27,7 +27,7 @@ async function bootstrap() {
   app.enableCors(); // 启用跨域支持
   app.useGlobalInterceptors(new TransformInterceptor())
   await app.listen(config.project.port, config.project.host, () => {
-    logger.log(`项目[${config.project.name}] v${config.project.version} 已启动，访问地址: http://${config.project.host}:${config.project.port}`);
+    logger.log(`项目[${config.project.name}] v${config.project.version} 已启动, 访问地址: http://${config.project.host}:${config.project.port}`);
   });
 }
 

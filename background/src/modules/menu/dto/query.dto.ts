@@ -1,19 +1,19 @@
 /*
  * @Author: 王野 18545455617@163.com
- * @Date: 2025-04-18 12:01:43
+ * @Date: 2025-05-05 09:32:25
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 09:42:13
- * @FilePath: /nodejs-qb/background/src/user/dto/query.dto.ts
- * @Description: 用户 查询dto
+ * @LastEditTime: 2025-05-05 09:42:02
+ * @FilePath: /nodejs-qb/background/src/modules/menu/dto/query.dto.ts
+ * @Description: 菜单 查询dto
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { FindOptionsOrder } from "typeorm";
 import { IsOptional, IsObject, IsInt, Min, ValidateNested } from 'class-validator';
-import { User } from '../user.entity';
+import { Menu } from '../menu.entity';
 import { Type } from 'class-transformer';
 import { WhereDto } from '@/common/dto/where.dto';
 
-export class UserQueryDto {
+export class MenuQueryDto {
     @ApiProperty({
         description: '查询条件(支持 equals, like, relations)',
         required: false,
@@ -31,7 +31,7 @@ export class UserQueryDto {
     })
     @IsOptional()
     @IsObject()
-    order?: FindOptionsOrder<User>;
+    order?: FindOptionsOrder<Menu>;
 
     @ApiProperty({
         description: '页码（从 1 开始）',
