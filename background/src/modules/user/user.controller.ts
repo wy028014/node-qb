@@ -1,7 +1,7 @@
 /*
  * @Author: 王野
  * @Date: 2025-04-18
- * @LastEditTime: 2025-05-05 09:59:45
+ * @LastEditTime: 2025-05-05 12:18:09
  * @Description: 用户 控制层（优化 & 排序 & 反引号）
  */
 import {
@@ -27,10 +27,10 @@ import {
     ApiResponse,
     ApiTags,
 } from "@nestjs/swagger";
-import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 import { CustomLogger } from "@/plugins";
+import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 import { MyResDto } from "@/common/dto/response.dto";
+import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 import { UserCreateDto } from "./dto/create.dto";
 import { UserQueryDto } from "./dto/query.dto";
 import { UserService } from "./user.service";
@@ -101,10 +101,11 @@ export class UserController {
         };
     }
 
+    @Patch(`:id`)
     @ApiOperation({ summary: `根据 ID 更新用户` })
     @ApiResponse({ description: `更新成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
-    @Patch(`:id`)
+    @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async update(
         @Param(`id`, ParseUUIDPipe) id: string,
         @Body() updateDto: UserUpdateDto,
@@ -119,10 +120,11 @@ export class UserController {
         };
     }
 
+    @Delete(`:id`)
     @ApiOperation({ summary: `根据 ID 软删除用户` })
     @ApiResponse({ description: `删除成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
-    @Delete(`:id`)
+    @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async remove(
         @Param(`id`, ParseUUIDPipe) id: string,
     ): Promise<MyResDto> {

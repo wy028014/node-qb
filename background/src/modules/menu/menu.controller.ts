@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 10:00:58
+ * @LastEditTime: 2025-05-05 11:40:27
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.controller.ts
  * @Description: 菜单 控制层
  */
@@ -110,9 +110,8 @@ export class MenuController {
     async update(
         @Param(`id`, ParseUUIDPipe) id: string,
         @Body() updateDto: MenuUpdateDto,
-        @Body('userIds') userIds?: string[],
     ): Promise<MyResDto> {
-        const updated = await this.menuService.update(id, updateDto, userIds);
+        const updated = await this.menuService.update(id, updateDto);
         this.logger.log(`更新菜单成功, ID: ${id}`);
         return {
             data: [updated],
@@ -126,6 +125,7 @@ export class MenuController {
     @ApiOperation({ summary: `根据 ID 软删除菜单` })
     @ApiResponse({ description: `删除成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
+    @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async remove(
         @Param(`id`, ParseUUIDPipe) id: string,
     ): Promise<MyResDto> {

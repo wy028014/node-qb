@@ -2,26 +2,25 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:29:21
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 10:00:47
+ * @LastEditTime: 2025-05-05 14:04:56
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.service.ts
  * @Description: 菜单 服务层
  */
+import { CustomLogger } from "@/plugins";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, SelectQueryBuilder } from "typeorm";
 import { Menu } from "./menu.entity";
 import { MenuCreateDto } from "./dto/create.dto";
 import { MenuUpdateDto } from "./dto/update.dto";
-import { User } from "@/modules/user/user.entity";
 import { MenuQueryDto } from "./dto/query.dto";
 
 @Injectable()
 export class MenuService {
     constructor(
+        private readonly logger: CustomLogger,
         @InjectRepository(Menu)
         private readonly menuRepository: Repository<Menu>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
     ) { }
 
     // 创建菜单，并可关联用户列表
@@ -48,48 +47,50 @@ export class MenuService {
 
     // 查询所有菜单并关联用户
     async find(query: MenuQueryDto): Promise<{ list: Menu[]; total: number }> {
-        const qb: SelectQueryBuilder<Menu> = this.menuRepository.createQueryBuilder(`menu`);
-        qb.where(`menu.deletedAt IS NULL`);
+        try {
+            const qb: SelectQueryBuilder<Menu> = this.menuRepository.createQueryBuilder(`menu`);
+            qb.where(`menu.deletedAt IS NULL`);
 
-        const where = query.where || {};
-        for (const [key, val] of Object.entries(where.equals || {})) {
-            qb.andWhere(`menu.${key} = :${key}`, { [key]: val });
-        }
-        if (where.like) {
-            for (const [key, val] of Object.entries(where.like)) {
-                qb.andWhere(`menu.${key} LIKE :${key}_like`, { [`${key}_like`]: `%${val}%` });
+            const where = query.where || {};
+            // 处理等于条件
+            for (const [key, val] of Object.entries(where.equals || {})) {
+                qb.andWhere(`menu.${key} = :${key}`, { [key]: val });
             }
-        }
-        if (where.relations) {
-            for (const rel of where.relations) {
-                qb.leftJoinAndSelect(`menu.${rel}`, rel);
+            // 处理模糊查询条件
+            if (where.like) {
+                for (const [key, val] of Object.entries(where.like)) {
+                    qb.andWhere(`menu.${key} LIKE :${key}_like`, { [`${key}_like`]: `%${val}%` });
+                }
             }
+            // 处理关联关系
+            if (where.relations) {
+                for (const rel of where.relations) {
+                    qb.leftJoinAndSelect(`menu.${rel}`, rel);
+                }
+            }// 关联子菜单
+            qb.leftJoinAndSelect(`menu.children`, `children`);
+            if (query.page && query.size) {
+                qb.skip((query.page - 1) * query.size).take(query.size);
+            }
+            // 分页处理
+            if (query.page && query.size) {
+                qb.skip((query.page - 1) * query.size).take(query.size);
+            }
+            const [list, total] = await qb.getManyAndCount();
+            return { list, total };
+        } catch (error) {
+            this.logger.error('查询菜单时出错', error);
+            throw error;
         }
-
-        if (query.page && query.size) {
-            qb.skip((query.page - 1) * query.size).take(query.size);
-        }
-
-        const [list, total] = await qb.getManyAndCount();
-        return { list, total };
     }
 
-    // 更新菜单及其关联用户
-    async update(
-        id: string,
-        updateDto: MenuUpdateDto,
-        userIds?: string[],
-    ): Promise<Menu> {
-        const menu = await this.menuRepository.findOne({ where: { id }, relations: [`users`] });
+    // 更新菜单信息
+    async update(id: string, updateDto: MenuUpdateDto): Promise<Menu> {
+        const menu = await this.menuRepository.findOne({ where: { id } });
         if (!menu) {
             throw new NotFoundException(`菜单未找到`);
         }
-        Object.assign(menu, updateDto);
-        if (userIds) {
-            const users = await this.userRepository.findByIds(userIds);
-            menu.users = users;
-        }
-        return this.menuRepository.save(menu);
+        return this.menuRepository.save(updateDto);
     }
 
     // 软删除菜单
