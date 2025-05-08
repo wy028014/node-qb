@@ -51,7 +51,7 @@ const handleColumnVisibilityChange = (prop: string, visible: boolean) => {
 }
 </script>
 <style scoped>
-i[class^='ri-'] {
+i[class^="ri-"] {
     padding-left: 0.8em;
     scale: 1.2;
 }

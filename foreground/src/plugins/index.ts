@@ -1,2 +1,2 @@
-export { Dayjs, func_getAgeFromIdCard } from './modules/dayjs'
-export { Nprogress } from './modules/nprogress'
+export { Dayjs, func_getAgeFromIdCard } from "./modules/dayjs"
+export { Nprogress } from "./modules/nprogress"

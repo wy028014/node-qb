@@ -13,7 +13,7 @@
                     "$comment": "https://github.com/nestjs/nest-cli/blob/master/lib/compiler/defaults/webpac-defaults.ts",
                     "default": "tsconfig.build.json",
                     "type": "string",
-                    "description": "(monorepo only) Points at the file containing the tsconfig.json settings that will be used when nest build or nest start is called without a project option (e.g., when the default project is built or started). 'nest build' will not work as expected without this file."
+                    "description": "(monorepo only) Points at the file containing the tsconfig.json settings that will be used when nest build or nest start is called without a project option (e.g., when the default project is built or started). "nest build" will not work as expected without this file."
                 },
                 "builder": {
                     "anyOf": [
@@ -429,7 +429,7 @@
                         ".entity.ts",
                         ".model.ts"
                     ],
-                    "description": "(GraphQL Only) GraphQL types files suffix. Default value: ['.input.ts', '.args.ts', '.entity.ts', '.model.ts']. See https://docs.nestjs.com/graphql/cli-plugin#using-the-cli-plugin for details."
+                    "description": "(GraphQL Only) GraphQL types files suffix. Default value: [".input.ts", ".args.ts", ".entity.ts", ".model.ts"]. See https://docs.nestjs.com/graphql/cli-plugin#using-the-cli-plugin for details."
                 }
             }
         },
@@ -446,7 +446,7 @@
                         ".dto.ts",
                         ".entity.ts"
                     ],
-                    "description": "(Swagger Only) DTO (Data Transfer Object) files suffix. Default value: ['.dto.ts', '.entity.ts']. See https://docs.nestjs.com/openapi/cli-plugin#using-the-cli-plugin for details"
+                    "description": "(Swagger Only) DTO (Data Transfer Object) files suffix. Default value: [".dto.ts", ".entity.ts"]. See https://docs.nestjs.com/openapi/cli-plugin#using-the-cli-plugin for details"
                 },
                 "controllerFileNameSuffix": {
                     "type": "string",
@@ -491,7 +491,7 @@
             "$comment": "https://github.com/nestjs/nest-cli/blob/master/actions/start.action.ts",
             "type": "string",
             "default": "main",
-            "description": "The entry file where 'nest start' work with. Default to 'main'."
+            "description": "The entry file where "nest start" work with. Default to "main"."
         },
         "monorepo": {
             "type": "boolean",

@@ -2,11 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 08:44:02
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 08:44:09
+ * @LastEditTime: 2025-05-08 08:43:00
  * @FilePath: /nodejs-qb/background/src/types/response.dto.ts
- * @Description: 返回值的dto
+ * @Description: 返回值 dto
  */
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class MyResDto {
   @ApiProperty({ required: false, description: `响应数据` })

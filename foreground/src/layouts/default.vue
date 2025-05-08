@@ -9,9 +9,9 @@
   </el-container>
 </template>
 <script setup lang="ts">
-import Header from './components/header.vue'
-import Aside from './components/aside.vue'
-import Main from './components/main.vue'
-import Footer from './components/footer.vue'
+import Header from "./components/header.vue"
+import Aside from "./components/aside.vue"
+import Main from "./components/main.vue"
+import Footer from "./components/footer.vue"
 </script>
 <style scoped></style>

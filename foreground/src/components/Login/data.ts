@@ -1,7 +1,7 @@
-import { FormInstance } from 'element-plus';
-import { reactive, ref } from 'vue';
-import { useInfoStore, useMenuStore } from '@/store';
-import { useRouter } from 'vue-router';
+import { FormInstance } from "element-plus";
+import { reactive, ref } from "vue";
+import { useInfoStore, useMenuStore } from "@/store";
+import { useRouter } from "vue-router";
 
 const loginData = () => {
   const captchaSrc = ref<string>(`/api/base`);
@@ -25,7 +25,7 @@ const loginData = () => {
 
   const btn_captcha = () => {
     const url = new URL(captchaSrc.value, window.location.origin);
-    url.searchParams.set('_t', Math.random().toString());
+    url.searchParams.set("_t", Math.random().toString());
     captchaSrc.value = url.href;
   };
 

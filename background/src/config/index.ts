@@ -1,3 +1,11 @@
+/*
+ * @Author: 王野 18545455617@163.com
+ * @Date: 2025-04-18 11:08:12
+ * @LastEditors: 王野 18545455617@163.com
+ * @LastEditTime: 2025-05-08 09:28:35
+ * @FilePath: /nodejs-qb/background/src/config/index.ts
+ * @Description: 配置
+ */
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { JwtModuleOptions } from "@nestjs/jwt";
 

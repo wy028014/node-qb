@@ -2,9 +2,9 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:35:36
- * @FilePath: /nodejs-qb/background/src/modules/user/user.controller.ts
- * @Description: 用户 控制层
+ * @LastEditTime: 2025-05-08 09:37:34
+ * @FilePath: /nodejs-qb/background/src/modules/user2menu/user2menu.controller.ts
+ * @Description: 用户2菜单 控制层
  */
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import {
@@ -16,50 +16,48 @@ import {
     HttpStatus,
     Param,
     ParseUUIDPipe,
-    Patch,
     Post,
     Query,
     UseInterceptors,
     UsePipes,
-    ValidationPipe,
+    ValidationPipe
 } from "@nestjs/common";
-import { CustomLogger } from "@/plugins";
 import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { MyResDto } from "@/common/dto/response.dto";
 import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
-import { UserCreateDto } from "./dto/create.dto";
-import { UserQueryDto } from "./dto/query.dto";
-import { UserService } from "./user.service";
-import { UserUpdateDto } from "./dto/update.dto";
+import { CustomLogger } from "@/plugins";
+import { MyResDto } from "@/common/dto/response.dto";
+import { User2menuCreateDto } from "./dto/create.dto";
+import { User2menuService } from "./user2menu.service";
+import { User2menuQueryDto } from "./dto/query.dto";
 
-@ApiTags(`用户`)
-@Controller(`user`)
+@ApiTags(`用户2菜单`)
+@Controller(`user2menu`)
 @UseInterceptors(HttpExceptionFilter, ResponseInterceptor)
-export class UserController {
+export class User2menuController {
     constructor(
         private readonly logger: CustomLogger,
-        private readonly userService: UserService,
+        private readonly user2menuService: User2menuService
     ) { }
 
     @Post()
-    @ApiBody({ description: `用户列表`, type: [UserCreateDto] })
-    @ApiOperation({ summary: `批量创建用户` })
+    @ApiBody({ description: `用户2菜单列表`, type: [User2menuCreateDto] })
+    @ApiOperation({ summary: `批量创建用户2菜单` })
     @ApiResponse({ description: `批量创建成功`, status: HttpStatus.CREATED, type: MyResDto })
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
-    async create(@Body() createUsersDto: UserCreateDto[]): Promise<MyResDto> {
-        const { failCount, successCount } = await this.userService.create(createUsersDto);
-        this.logger.log(`创建用户: 成功 ${successCount}, 失败 ${failCount}`);
+    async create(@Body() createDto: User2menuCreateDto[]): Promise<MyResDto> {
+        const { successCount, failCount } = await this.user2menuService.create(createDto);
+        this.logger.log(`创建用户2菜单: 成功 ${successCount}, 失败 ${failCount}`);
         return {
             data: { failCount, successCount },
-            message: `创建用户完成`,
+            message: `创建用户2菜单成功`,
             statusCode: HttpStatus.CREATED,
-            success: true,
+            success: true
         };
     }
 
     @Get()
-    @ApiOperation({ summary: `根据条件查找用户` })
+    @ApiOperation({ summary: `根据条件查找用户2菜单` })
     @ApiQuery({
         name: `equals`,
         required: false,
@@ -67,9 +65,6 @@ export class UserController {
         explode: true,
         schema: {
             type: `object`,
-            properties: {
-                username: { type: `string`, example: `028014` },
-            },
         },
     })
     @ApiQuery({
@@ -79,9 +74,6 @@ export class UserController {
         explode: true,
         schema: {
             type: `object`,
-            properties: {
-                username: { type: `string`, example: `028014` },
-            },
         },
     })
     @ApiQuery({
@@ -91,7 +83,7 @@ export class UserController {
         explode: true,
         schema: {
             type: `array`,
-            items: { type: `string`, example: `user2menus.menu` },
+            items: { type: `string`, example: `user` },
         },
     })
     @ApiQuery({
@@ -113,52 +105,31 @@ export class UserController {
         transform: true,
         whitelist: true,
         forbidNonWhitelisted: false,
-        transformOptions: { enableImplicitConversion: true },
+        transformOptions: { enableImplicitConversion: true }
     }))
-    async find(
-        @Query() query: UserQueryDto,
-    ): Promise<MyResDto> {
-        const { list, total } = await this.userService.find(query);
+    async find(@Query() query: User2menuQueryDto): Promise<MyResDto> {
+        const { list, total } = await this.user2menuService.find(query);
         return {
             data: { list, total },
-            message: `查询用户成功`,
+            message: `查询用户2菜单成功`,
             statusCode: HttpStatus.OK,
-            success: true,
-        };
-    }
-
-    @Patch(`:id`)
-    @ApiOperation({ summary: `根据 id 更新用户` })
-    @ApiResponse({ description: `更新成功`, status: HttpStatus.OK, type: MyResDto })
-    @HttpCode(HttpStatus.OK)
-    @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
-    async update(
-        @Param(`id`, ParseUUIDPipe) id: string,
-        @Body() updateDto: UserUpdateDto,
-    ): Promise<MyResDto> {
-        const updated = await this.userService.update(id, updateDto);
-        this.logger.log(`更新用户成功, id: ${id}`);
-        return {
-            data: [updated],
-            message: `用户更新成功`,
-            statusCode: HttpStatus.OK,
-            success: true,
+            success: true
         };
     }
 
     @Delete(`:id`)
-    @ApiOperation({ summary: `根据 id 软删除用户` })
+    @ApiOperation({ summary: `根据 id 软删除用户2菜单` })
     @ApiResponse({ description: `删除成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-        await this.userService.remove(id);
-        this.logger.log(`软删除用户成功, id: ${id}`);
+        await this.user2menuService.remove(id);
+        this.logger.log(`软删除用户2菜单成功, id: ${id}`);
         return {
             data: null,
-            message: `用户删除成功`,
+            message: `用户2菜单删除成功`,
             statusCode: HttpStatus.OK,
-            success: true,
+            success: true
         };
     }
 }

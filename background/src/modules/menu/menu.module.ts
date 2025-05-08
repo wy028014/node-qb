@@ -6,12 +6,12 @@
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.module.ts
  * @Description: 菜单 模块
  */
-import { CustomLogger } from '@/plugins';
-import { Menu } from './menu.entity';
-import { MenuController } from './menu.controller';
-import { MenuService } from './menu.service';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { CustomLogger } from "@/plugins";
+import { Menu } from "./menu.entity";
+import { MenuController } from "./menu.controller";
+import { MenuService } from "./menu.service";
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
     controllers: [MenuController],

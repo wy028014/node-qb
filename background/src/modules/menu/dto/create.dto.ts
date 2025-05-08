@@ -2,16 +2,17 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:25:04
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 09:34:45
+ * @LastEditTime: 2025-05-08 08:46:48
  * @FilePath: /nodejs-qb/background/src/modules/menu/dto/create.dto.ts
  * @Description: 菜单 新增dto
  */
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsString, IsOptional } from "class-validator";
 
 export class MenuCreateDto {
     @ApiProperty({
         description: `菜单的图标`,
+        example: `tool`,
         type: String
     })
     @IsOptional()
@@ -20,12 +21,14 @@ export class MenuCreateDto {
 
     @ApiProperty({
         description: `菜单的名称, 用于唯一标识菜单`,
+        example: `Management`,
         type: String
     })
     @IsString()
     name: string;
 
     @ApiProperty({
+        default: null,
         description: `菜单的父id`,
         type: String
     })

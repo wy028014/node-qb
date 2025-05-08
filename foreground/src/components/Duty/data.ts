@@ -1,5 +1,5 @@
-import { reactive } from 'vue'
-import { DutyApi } from '@/api/modules/'
+import { reactive } from "vue"
+import { DutyApi } from "@/api/modules/"
 
 const DutyData: {
   loading: boolean

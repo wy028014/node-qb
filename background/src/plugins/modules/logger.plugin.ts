@@ -6,8 +6,8 @@
  * @FilePath: /nodejs-qb/background/src/plugins/modules/logger.plugin.ts
  * @Description: 插件 日志
  */
-import { Logger, LogLevel } from '@nestjs/common';
-import { Dayjs } from '../';
+import { Logger, LogLevel } from "@nestjs/common";
+import { Dayjs } from "../";
 
 // 定义日志级别
 type LogLevelType = LogLevel | `all`;

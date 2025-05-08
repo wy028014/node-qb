@@ -2,13 +2,13 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:19:56
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 13:58:30
+ * @LastEditTime: 2025-05-08 08:52:29
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.entity.ts
  * @Description: 菜单 实体
  */
 import { baseEntity } from "@/common/entities/base.entity";
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
-import { User2Menu } from "@/modules/user2menu/user2menu.entity";
+import { User2menu } from "@/modules/user2menu/user2menu.entity";
 
 @Entity()
 export class Menu extends baseEntity {
@@ -67,14 +67,6 @@ export class Menu extends baseEntity {
     @ManyToOne(() => Menu, (menu) => menu.children, { onDelete: `SET NULL`, nullable: true })
     parent: Menu;
 
-    @OneToMany(() => User2Menu, (user2menu) => user2menu.menu)
-    user2menus: User2Menu[];
-
-    // @ManyToMany(() => User, (user) => user.menus)
-    // @JoinTable({
-    //     name: `user2menu`,
-    //     joinColumn: { name: `menuId`, referencedColumnName: `id` },
-    //     inverseJoinColumn: { name: `userId`, referencedColumnName: `id` },
-    // })
-    // users: User[];
+    @OneToMany(() => User2menu, (user2menu) => user2menu.menu)
+    user2menus: User2menu[];
 }

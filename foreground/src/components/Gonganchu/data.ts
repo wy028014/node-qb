@@ -1,5 +1,5 @@
-import { reactive } from 'vue'
-import { GonganchuApi } from '@/api/modules'
+import { reactive } from "vue"
+import { GonganchuApi } from "@/api/modules"
 
 const GonganchuData: {
   loading: boolean

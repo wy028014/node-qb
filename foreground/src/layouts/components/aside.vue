@@ -3,7 +3,7 @@
     <Logo></Logo>
     <el-scrollbar class="h-full">
       <el-menu :collapse="collapsed" class="el-menu-vertical-demo" :default-active="activeMenuString"
-        :hover-background-color="'#dfedfb'" background-color="#c0dcf7" text-color="#303133" active-text-color="#409EFF"
+        :hover-background-color=""#dfedfb"" background-color="#c0dcf7" text-color="#303133" active-text-color="#409EFF"
         unique-opened collapse-transition router>
         <template v-for="route in menuStore.menus" :key="route.path">
           <el-menu-item v-if="
@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useMenuStore } from '@/store'
-import Logo from './logo.vue'
+import { ref, computed } from "vue"
+import { useRoute } from "vue-router"
+import { useMenuStore } from "@/store"
+import Logo from "./logo.vue"
 
 const collapsed = ref(false)
 const menuStore = useMenuStore()
@@ -82,7 +82,7 @@ const handleSubMenuChange = (path: string) => {
   }
 }
 
-i[class^='ri-'] {
+i[class^="ri-"] {
   padding-right: 0.8em;
   scale: 1.6;
 }

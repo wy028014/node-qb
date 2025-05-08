@@ -2,10 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 11:40:27
+ * @LastEditTime: 2025-05-08 09:34:08
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.controller.ts
  * @Description: 菜单 控制层
  */
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import {
     Body,
     Controller,
@@ -22,13 +23,6 @@ import {
     UsePipes,
     ValidationPipe,
 } from "@nestjs/common";
-import {
-    ApiBody,
-    ApiOperation,
-    ApiQuery,
-    ApiResponse,
-    ApiTags,
-} from "@nestjs/swagger";
 import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 import { CustomLogger } from "@/plugins";
@@ -38,7 +32,7 @@ import { MenuUpdateDto } from "./dto/update.dto";
 import { MenuService } from "./menu.service";
 import { MenuQueryDto } from "./dto/query.dto";
 
-@ApiTags(`menu`)
+@ApiTags(`菜单`)
 @Controller(`menu`)
 @UseInterceptors(HttpExceptionFilter, ResponseInterceptor)
 export class MenuController {
@@ -48,7 +42,7 @@ export class MenuController {
     ) { }
 
     @Post()
-    @ApiBody({ description: `创建菜单`, type: [MenuCreateDto] })
+    @ApiBody({ description: `菜单列表`, type: [MenuCreateDto] })
     @ApiOperation({ summary: `批量创建菜单` })
     @ApiResponse({ description: `批量创建成功`, status: HttpStatus.CREATED, type: MyResDto })
     @HttpCode(HttpStatus.CREATED)
@@ -57,7 +51,7 @@ export class MenuController {
         @Body() createDto: MenuCreateDto[],
     ): Promise<MyResDto> {
         const { failCount, successCount } = await this.menuService.create(createDto);
-        this.logger.log(`创建菜单：成功 ${successCount}, 失败 ${failCount}`);
+        this.logger.log(`创建菜单: 成功 ${successCount}, 失败 ${failCount}`);
         return {
             data: { failCount, successCount },
             message: `创建菜单成功`,
@@ -69,19 +63,52 @@ export class MenuController {
     @Get()
     @ApiOperation({ summary: `根据条件查找菜单` })
     @ApiQuery({
-        name: `where`,
+        name: `equals`,
         required: false,
         style: `deepObject`,
         explode: true,
         schema: {
             type: `object`,
             properties: {
-                equals: { type: `object`, additionalProperties: { type: `string` } },
-                like: { type: `object`, additionalProperties: { type: `string` } },
-                relations: { type: `array`, items: { type: `string` } },
+                icon: { type: `string`, example: `tool` },
             },
         },
     })
+    @ApiQuery({
+        name: `like`,
+        required: false,
+        style: `deepObject`,
+        explode: true,
+        schema: {
+            type: `object`,
+            properties: {
+                title: { type: `string`, example: `管理` },
+            },
+        },
+    })
+    @ApiQuery({
+        name: `relations`,
+        required: false,
+        style: `form`,
+        explode: true,
+        schema: {
+            type: `array`,
+            items: { type: `string`, example: `menu` },
+        },
+    })
+    @ApiQuery({
+        name: `order`,
+        required: false,
+        style: `deepObject`,
+        explode: true,
+        schema: {
+            type: `object`,
+            additionalProperties: { type: `string`, enum: [`ASC`, `DESC`] },
+            example: { id: `DESC` },
+        },
+    })
+    @ApiQuery({ name: `page`, required: false, schema: { type: `integer`, default: 1, minimum: 1 } })
+    @ApiQuery({ name: `size`, required: false, schema: { type: `integer`, default: 10, minimum: 1 } })
     @ApiResponse({ description: `查询成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({
@@ -126,9 +153,7 @@ export class MenuController {
     @ApiResponse({ description: `删除成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
-    async remove(
-        @Param(`id`, ParseUUIDPipe) id: string,
-    ): Promise<MyResDto> {
+    async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
         await this.menuService.remove(id);
         this.logger.log(`软删除菜单成功, ID: ${id}`);
         return {
