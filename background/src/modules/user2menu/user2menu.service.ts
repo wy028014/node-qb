@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:53:04
+ * @LastEditTime: 2025-05-09 08:02:26
  * @FilePath: /nodejs-qb/background/src/user2menu/user2menu.service.ts
  * @Description: 用户2菜单 服务层
  */
@@ -35,7 +35,7 @@ export class User2menuService {
     // 2) 过滤出不存在的用户(避免重复检查)
     const validDtos: User2menuCreateDto[] = createDto.filter((dto: User2menuCreateDto) => !existingUserIds.includes(dto.userId));
     // 3) 批量创建实体(利用TypeORM批量插入)
-    const user2menusToSave = validDtos.map((dto: User2menuCreateDto) => {
+    const user2menusToSave: User2menu[] = validDtos.map((dto: User2menuCreateDto) => {
       return this.user2menuRepository.create(dto);
     });
     // 4) 批量保存(单次数据库操作)
@@ -59,12 +59,12 @@ export class User2menuService {
     // 1) 软删除过滤
     qb.where(`user2menu.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals = queryDto.equals ?? {};
+    const equals: Record<string, any> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`user2menu.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like = queryDto.like ?? {};
+    const like: Record<string, any> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`user2menu.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,
@@ -72,9 +72,9 @@ export class User2menuService {
     }
     // 4) 关联加载
     for (const rel of queryDto.relations ?? []) {
-      let parent = `user2menu`;
+      let parent: string = `user2menu`;
       for (const segment of rel.split(`.`)) {
-        const alias = `${parent}_${segment}`;
+        const alias: string = `${parent}_${segment}`;
         qb.leftJoinAndSelect(`${parent}.${segment}`, alias);
         parent = alias;
       }
@@ -85,12 +85,12 @@ export class User2menuService {
     }
     // 6) 分页
     if (queryDto.page && queryDto.size) {
-      const page = queryDto.page;
-      const size = queryDto.size;
+      const page: number = queryDto.page;
+      const size: number = queryDto.size;
       qb.skip((page - 1) * size).take(size);
     }
     // 7) 执行
-    const [list, total] = await qb.getManyAndCount();
+    const [list, total]: [list: User2menu[], total: number] = await qb.getManyAndCount();
     return { list, total };
   }
 

@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 13:42:48
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-05 08:56:09
+ * @LastEditTime: 2025-05-09 08:02:54
  * @FilePath: /nodejs-qb/background/src/plugins/modules/dayjs.plugin.ts
  * @Description: 插件 日期时间
  */
@@ -40,10 +40,10 @@ export function func_getAgeFromIdCard(idCardNumber: string): number {
     if (idCardNumber.length !== 18) {
         throw new Error(`输入的身份证号码 ${idCardNumber} 长度不为18位, 必须是18位身份证号码`);
     }
-    const birthDateStr = idCardNumber.substring(6, 14);
-    const birthDate = dayjs(birthDateStr, `YYYYMMDD`);
-    const today = dayjs.utc().local();
-    const age = today.diff(birthDate, `years`);
+    const birthDateStr: string = idCardNumber.substring(6, 14);
+    const birthDate: dayjs.Dayjs = dayjs(birthDateStr, `YYYYMMDD`);
+    const today: dayjs.Dayjs = dayjs.utc().local();
+    const age: number = today.diff(birthDate, `years`);
 
     return parseInt(age.toString(), 10);
 }

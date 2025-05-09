@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:37:34
+ * @LastEditTime: 2025-05-09 07:59:28
  * @FilePath: /nodejs-qb/background/src/modules/user2menu/user2menu.controller.ts
  * @Description: 用户2菜单 控制层
  */
@@ -22,10 +22,11 @@ import {
     UsePipes,
     ValidationPipe
 } from "@nestjs/common";
-import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 import { CustomLogger } from "@/plugins";
+import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 import { MyResDto } from "@/common/dto/response.dto";
+import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
+import { User2menu } from "./user2menu.entity";
 import { User2menuCreateDto } from "./dto/create.dto";
 import { User2menuService } from "./user2menu.service";
 import { User2menuQueryDto } from "./dto/query.dto";
@@ -46,10 +47,10 @@ export class User2menuController {
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async create(@Body() createDto: User2menuCreateDto[]): Promise<MyResDto> {
-        const { successCount, failCount } = await this.user2menuService.create(createDto);
+        const { successCount, failCount }: { successCount: number; failCount: number } = await this.user2menuService.create(createDto);
         this.logger.log(`创建用户2菜单: 成功 ${successCount}, 失败 ${failCount}`);
         return {
-            data: { failCount, successCount },
+            data: { successCount, failCount },
             message: `创建用户2菜单成功`,
             statusCode: HttpStatus.CREATED,
             success: true
@@ -108,7 +109,7 @@ export class User2menuController {
         transformOptions: { enableImplicitConversion: true }
     }))
     async find(@Query() query: User2menuQueryDto): Promise<MyResDto> {
-        const { list, total } = await this.user2menuService.find(query);
+        const { list, total }: { list: User2menu[], total: number } = await this.user2menuService.find(query);
         return {
             data: { list, total },
             message: `查询用户2菜单成功`,

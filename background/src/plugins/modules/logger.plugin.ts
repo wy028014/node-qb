@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 13:35:45
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-04-18 13:47:43
+ * @LastEditTime: 2025-05-09 08:03:08
  * @FilePath: /nodejs-qb/background/src/plugins/modules/logger.plugin.ts
  * @Description: 插件 日志
  */
@@ -13,7 +13,7 @@ import { Dayjs } from "../";
 type LogLevelType = LogLevel | `all`;
 
 export class CustomLogger {
-    private readonly logger = new Logger();
+    private readonly logger: Logger = new Logger();
     private logLevels: LogLevelType[] = [`log`, `error`, `warn`, `debug`, `verbose`];
 
     constructor(logLevels?: LogLevelType[]) {
@@ -32,7 +32,7 @@ export class CustomLogger {
      */
     log(message: string) {
         if (this.shouldLog(`log`)) {
-            const timestamp = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+            const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
             this.logger.log(`${timestamp} | ${message}`);
         }
     }
@@ -44,7 +44,7 @@ export class CustomLogger {
      */
     error(message: string, trace?: string) {
         if (this.shouldLog(`error`)) {
-            const timestamp = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+            const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
             this.logger.error(`${timestamp} | ${message}`, trace);
         }
     }
@@ -55,7 +55,7 @@ export class CustomLogger {
      */
     warn(message: string) {
         if (this.shouldLog(`warn`)) {
-            const timestamp = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+            const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
             this.logger.warn(`${timestamp} | ${message}`);
         }
     }
@@ -66,7 +66,7 @@ export class CustomLogger {
      */
     debug(message: string) {
         if (this.shouldLog(`debug`)) {
-            const timestamp = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+            const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
             this.logger.debug(`${timestamp} | ${message}`);
         }
     }
@@ -77,7 +77,7 @@ export class CustomLogger {
      */
     verbose(message: string) {
         if (this.shouldLog(`verbose`)) {
-            const timestamp = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+            const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
             this.logger.verbose(`${timestamp} | ${message}`);
         }
     }

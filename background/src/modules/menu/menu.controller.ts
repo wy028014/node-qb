@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:34:08
+ * @LastEditTime: 2025-05-09 07:35:01
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.controller.ts
  * @Description: 菜单 控制层
  */
@@ -23,14 +23,15 @@ import {
     UsePipes,
     ValidationPipe,
 } from "@nestjs/common";
-import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 import { CustomLogger } from "@/plugins";
-import { MyResDto } from "@/common/dto/response.dto";
+import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
+import { Menu } from "./menu.entity";
 import { MenuCreateDto } from "./dto/create.dto";
 import { MenuUpdateDto } from "./dto/update.dto";
 import { MenuService } from "./menu.service";
 import { MenuQueryDto } from "./dto/query.dto";
+import { MyResDto } from "@/common/dto/response.dto";
+import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
 
 @ApiTags(`菜单`)
 @Controller(`menu`)
@@ -50,10 +51,10 @@ export class MenuController {
     async create(
         @Body() createDto: MenuCreateDto[],
     ): Promise<MyResDto> {
-        const { failCount, successCount } = await this.menuService.create(createDto);
+        const { successCount, failCount }: { successCount: number; failCount: number } = await this.menuService.create(createDto);
         this.logger.log(`创建菜单: 成功 ${successCount}, 失败 ${failCount}`);
         return {
-            data: { failCount, successCount },
+            data: { successCount, failCount },
             message: `创建菜单成功`,
             statusCode: HttpStatus.CREATED,
             success: true,
@@ -120,7 +121,7 @@ export class MenuController {
     async find(
         @Query() query: MenuQueryDto,
     ): Promise<MyResDto> {
-        const { list, total } = await this.menuService.find(query);
+        const { list, total }: { list: Menu[], total: number } = await this.menuService.find(query);
         return {
             data: { list, total },
             message: `查询菜单成功`,
@@ -138,7 +139,7 @@ export class MenuController {
         @Param(`id`, ParseUUIDPipe) id: string,
         @Body() updateDto: MenuUpdateDto,
     ): Promise<MyResDto> {
-        const updated = await this.menuService.update(id, updateDto);
+        const updated: Menu = await this.menuService.update(id, updateDto);
         this.logger.log(`更新菜单成功, ID: ${id}`);
         return {
             data: [updated],

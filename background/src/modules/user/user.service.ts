@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:52:47
+ * @LastEditTime: 2025-05-09 07:56:17
  * @FilePath: /nodejs-qb/background/src/user/user.service.ts
  * @Description: 用户 服务层
  */
@@ -34,9 +34,9 @@ export class UserService {
       .getMany()
       .then((users: User[]) => users.map((user: User) => user.username));
     // 2) 过滤出不存在的用户(避免重复检查)
-    const validDtos = createDto.filter((dto: UserCreateDto) => !existingNames.includes(dto.username));
+    const validDtos: UserCreateDto[] = createDto.filter((dto: UserCreateDto) => !existingNames.includes(dto.username));
     // 3) 批量创建实体(利用TypeORM批量插入)
-    const usersToSave = validDtos.map((dto: UserCreateDto) => {
+    const usersToSave: User[] = validDtos.map((dto: UserCreateDto) => {
       return this.userRepository.create(dto);
     });
     // 4) 批量保存(单次数据库操作)
@@ -60,12 +60,12 @@ export class UserService {
     // 1) 软删除过滤
     qb.where(`user.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals = queryDto.equals ?? {};
+    const equals: Record<string, any> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`user.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like = queryDto.like ?? {};
+    const like: Record<string, any> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`user.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,
@@ -73,9 +73,9 @@ export class UserService {
     }
     // 4) 关联加载
     for (const rel of queryDto.relations ?? []) {
-      let parent = `user`;
+      let parent: string = `user`;
       for (const segment of rel.split(`.`)) {
-        const alias = `${parent}_${segment}`;
+        const alias: string = `${parent}_${segment}`;
         qb.leftJoinAndSelect(`${parent}.${segment}`, alias);
         parent = alias;
       }
@@ -86,18 +86,18 @@ export class UserService {
     }
     // 6) 分页
     if (queryDto.page && queryDto.size) {
-      const page = queryDto.page;
-      const size = queryDto.size;
+      const page: number = queryDto.page;
+      const size: number = queryDto.size;
       qb.skip((page - 1) * size).take(size);
     }
     // 7) 执行
-    const [list, total] = await qb.getManyAndCount();
+    const [list, total]: [list: User[], total: number] = await qb.getManyAndCount();
     return { list, total };
   }
 
   // 更新用户信息
   async update(id: string, updateDto: UserUpdateDto): Promise<User> {
-    const user = await this.userRepository.preload({ id, ...updateDto });
+    const user: User | undefined = await this.userRepository.preload({ id, ...updateDto });
     if (!user) {
       throw new NotFoundException(`用户 (id: ${id}) 未找到`);
     }

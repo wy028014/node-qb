@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 09:35:36
+ * @LastEditTime: 2025-05-09 07:53:46
  * @FilePath: /nodejs-qb/background/src/modules/user/user.controller.ts
  * @Description: 用户 控制层
  */
@@ -27,6 +27,7 @@ import { CustomLogger } from "@/plugins";
 import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 import { MyResDto } from "@/common/dto/response.dto";
 import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
+import { User } from "./user.entity";
 import { UserCreateDto } from "./dto/create.dto";
 import { UserQueryDto } from "./dto/query.dto";
 import { UserService } from "./user.service";
@@ -48,10 +49,10 @@ export class UserController {
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async create(@Body() createUsersDto: UserCreateDto[]): Promise<MyResDto> {
-        const { failCount, successCount } = await this.userService.create(createUsersDto);
+        const { successCount, failCount }: { successCount: number; failCount: number } = await this.userService.create(createUsersDto);
         this.logger.log(`创建用户: 成功 ${successCount}, 失败 ${failCount}`);
         return {
-            data: { failCount, successCount },
+            data: { successCount, failCount },
             message: `创建用户完成`,
             statusCode: HttpStatus.CREATED,
             success: true,
@@ -118,7 +119,7 @@ export class UserController {
     async find(
         @Query() query: UserQueryDto,
     ): Promise<MyResDto> {
-        const { list, total } = await this.userService.find(query);
+        const { list, total }: { list: User[], total: number } = await this.userService.find(query);
         return {
             data: { list, total },
             message: `查询用户成功`,
@@ -136,7 +137,7 @@ export class UserController {
         @Param(`id`, ParseUUIDPipe) id: string,
         @Body() updateDto: UserUpdateDto,
     ): Promise<MyResDto> {
-        const updated = await this.userService.update(id, updateDto);
+        const updated: User = await this.userService.update(id, updateDto);
         this.logger.log(`更新用户成功, id: ${id}`);
         return {
             data: [updated],

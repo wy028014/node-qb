@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:00:05
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 07:36:45
+ * @LastEditTime: 2025-05-09 08:04:28
  * @FilePath: /nodejs-qb/background/src/main.ts
  * @Description: 项目主文件
  */
@@ -12,10 +12,7 @@ import qs from "qs";
 import * as swaggerUiDist from "swagger-ui-dist";
 import { AppModule } from "./app.module";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from "@nestjs/platform-fastify";
+import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { RawServerDefault } from "fastify";
@@ -23,11 +20,11 @@ import { RawServerDefault } from "fastify";
 async function bootstrap() {
   // 1. 用 FastifyAdapter 创建应用
   const app: NestFastifyApplication<RawServerDefault> = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({
-    querystringParser: (str) => qs.parse(str),  // 使用 qs 解析深度对象
+    querystringParser: (str: string) => qs.parse(str),  // 使用 qs 解析深度对象
   }));
   const logger: Logger = new Logger(`main.ts`);
   // 2. 生成 OpenAPI 文档
-  const swaggerConfig = new DocumentBuilder()
+  const swaggerConfig: Omit<OpenAPIObject, `paths`> = new DocumentBuilder()
     .addBearerAuth()
     .setTitle(`项目平台`)
     .setDescription(`接口文档`)
@@ -35,7 +32,7 @@ async function bootstrap() {
     .build();
   const document: OpenAPIObject = SwaggerModule.createDocument(app, swaggerConfig);
   // 3. 挂载静态资源
-  const uiDistPath = swaggerUiDist.getAbsoluteFSPath();
+  const uiDistPath: string = swaggerUiDist.getAbsoluteFSPath();
   app.register(fastifyStatic, {
     root: uiDistPath,
     prefix: `/swagger-ui-dist/`,

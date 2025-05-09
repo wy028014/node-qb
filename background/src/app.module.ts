@@ -2,18 +2,18 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:00:05
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 03:22:25
+ * @LastEditTime: 2025-05-09 08:06:05
  * @FilePath: /nodejs-qb/background/src/app.module.ts
- * @Description: 模块 app
+ * @Description: app 模块
  */
-import { Module } from "@nestjs/common";
-import { JwtModule } from "@nestjs/jwt";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import config from "./config";
 import { AppController } from "./app.controller";
+import { JwtModule } from "@nestjs/jwt";
 import { MenuModule } from "./modules/menu/menu.module";
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from "./modules/user/user.module";
 import { User2menuModule } from "./modules/user2menu/user2menu.module";
-import config from "./config";
 
 @Module({
   imports: [
