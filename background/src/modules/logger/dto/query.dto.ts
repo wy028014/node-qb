@@ -1,19 +1,19 @@
 /*
  * @Author: 王野 18545455617@163.com
- * @Date: 2025-04-18 12:01:43
+ * @Date: 2025-05-10 14:39:00
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:57:03
- * @FilePath: /nodejs-qb/background/src/user/dto/query.dto.ts
- * @Description: 用户2菜单 查询dto
+ * @LastEditTime: 2025-05-10 14:39:27
+ * @FilePath: /nodejs-qb/background/src/modules/logger/dto/query.dto.ts
+ * @Description: 操作记录 查询dto
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { FindOptionsOrder } from 'typeorm';
 import { IsOptional, IsObject, IsInt, Min } from 'class-validator';
-import { QueryDto } from '@/common/dto/query.dto';
+import { Logger } from '../logger.entity';
 import { Type } from 'class-transformer';
-import { User2menu } from '@/modules/user2menu/user2menu.entity';
+import { QueryDto } from '@/common/dto/query.dto';
 
-export class User2menuQueryDto extends QueryDto {
+export class LoggerQueryDto extends QueryDto {
     @ApiProperty({
         description: "排序条件(键为字段名, 值为排序方向 ASC/DESC)",
         required: false,
@@ -21,7 +21,7 @@ export class User2menuQueryDto extends QueryDto {
     })
     @IsOptional()
     @IsObject()
-    order?: FindOptionsOrder<User2menu>;
+    order?: FindOptionsOrder<Logger>;
 
     @ApiProperty({
         description: "页码(从 1 开始)",

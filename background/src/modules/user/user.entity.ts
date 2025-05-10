@@ -6,10 +6,10 @@
  * @FilePath: /nodejs-qb/background/src/user/user.entity.ts
  * @Description: 用户 实体
  */
-import bcrypt from "bcryptjs";
-import { baseEntity } from "src/common/entities/base.entity";
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from "typeorm";
-import { User2menu } from "@/modules/user2menu/user2menu.entity";
+import bcrypt from 'bcryptjs';
+import { baseEntity } from 'src/common/entities/base.entity';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { User2menu } from '@/modules/user2menu/user2menu.entity';
 
 @Entity()
 export class User extends baseEntity {

@@ -11,10 +11,10 @@ import {
     ExecutionContext,
     Injectable,
     NestInterceptor,
-} from "@nestjs/common";
-import { formatDate } from "@/plugins";
-import { map } from "rxjs/operators";
-import { Observable } from "rxjs";
+} from '@nestjs/common';
+import { formatDate } from '@/plugins';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {

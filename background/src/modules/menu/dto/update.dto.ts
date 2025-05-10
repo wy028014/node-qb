@@ -6,7 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/modules/menu/dto/update.dto.ts
  * @Description: 菜单 更新dto
  */
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from 'class-validator';
 
 export class MenuUpdateDto {
     @IsOptional()

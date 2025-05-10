@@ -1,4 +1,4 @@
-import { reactive } from "vue"
+import { reactive } from 'vue"
 
 const GenderData: {
   loading: boolean

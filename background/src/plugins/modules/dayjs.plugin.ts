@@ -6,11 +6,11 @@
  * @FilePath: /nodejs-qb/background/src/plugins/modules/dayjs.plugin.ts
  * @Description: 插件 日期时间
  */
-import dayjs from "dayjs";
-import isLeapYear from "dayjs/plugin/isLeapYear";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import "dayjs/locale/zh-cn";
+import dayjs from 'dayjs';
+import isLeapYear from 'dayjs/plugin/isLeapYear';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import "dayjs/locale/zh-cn';
 
 // 扩展 dayjs 功能
 dayjs.extend(isLeapYear);

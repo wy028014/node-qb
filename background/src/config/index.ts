@@ -6,8 +6,8 @@
  * @FilePath: /nodejs-qb/background/src/config/index.ts
  * @Description: 配置
  */
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { JwtModuleOptions } from "@nestjs/jwt";
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { JwtModuleOptions } from '@nestjs/jwt';
 interface ProjectConfig {
     host: string;
     port: number;

@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import DefaultLayout from "@/layouts/default.vue";
-import path from "path";
-import { MetaInfo } from "@/types";
-import { authGuard, permissionGuard } from "./guard";
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import DefaultLayout from '@/layouts/default.vue';
+import path from 'path';
+import { MetaInfo } from '@/types';
+import { authGuard, permissionGuard } from './guard';
 
 // 自动导入 pages 目录下的所有 Vue 文件
 const vueModules = import.meta.glob("@/pages/**/index.vue", { eager: true });
@@ -19,7 +19,7 @@ Object.entries(vueModules).forEach(async ([vuePath, vueModule]) => {
     let layout = null;
     let requiresAuth = false;
     let hidden = false;
-    let menuName = "";
+    let menuName = "';
 
     // 读取对应的 JSON 文件
     const jsonPath = path.join(__dirname, `../pages/${dirName}/index.json`);

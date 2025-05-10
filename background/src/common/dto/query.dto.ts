@@ -6,9 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/common/dto/where.dto.ts
  * @Description: 查询 dto
  */
-import { IsOptional, IsObject, IsArray } from "class-validator";
-import { Transform, Type } from "class-transformer";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional, IsObject, IsArray } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class QueryDto {
     @ApiProperty({

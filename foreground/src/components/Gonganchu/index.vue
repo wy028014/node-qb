@@ -5,9 +5,9 @@
   </el-select>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from "vue"
-import GonganchuData from "./data"
-import { useInfoStore } from "@/store"
+import { onMounted, watch } from 'vue"
+import GonganchuData from './data"
+import { useInfoStore } from '@/store"
 const infoStore = useInfoStore()
 const props = defineProps({
   gonganjuId: {

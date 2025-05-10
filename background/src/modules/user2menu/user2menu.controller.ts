@@ -2,11 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:59:28
+ * @LastEditTime: 2025-05-10 15:47:22
  * @FilePath: /nodejs-qb/background/src/modules/user2menu/user2menu.controller.ts
  * @Description: 用户2菜单 控制层
  */
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Body,
     Controller,
@@ -21,15 +21,15 @@ import {
     UseInterceptors,
     UsePipes,
     ValidationPipe
-} from "@nestjs/common";
-import { CustomLogger } from "@/plugins";
-import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { MyResDto } from "@/common/dto/response.dto";
-import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
-import { User2menu } from "./user2menu.entity";
-import { User2menuCreateDto } from "./dto/create.dto";
-import { User2menuService } from "./user2menu.service";
-import { User2menuQueryDto } from "./dto/query.dto";
+} from '@nestjs/common';
+import { CustomLogger } from '@/plugins';
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
+import { MyResDto } from '@/common/dto/response.dto';
+import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
+import { User2menu } from './user2menu.entity';
+import { User2menuCreateDto } from './dto/create.dto';
+import { User2menuService } from './user2menu.service';
+import { User2menuQueryDto } from './dto/query.dto';
 
 @ApiTags(`用户2菜单`)
 @Controller(`user2menu`)
@@ -47,10 +47,10 @@ export class User2menuController {
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async create(@Body() createDto: User2menuCreateDto[]): Promise<MyResDto> {
-        const { successCount, failCount }: { successCount: number; failCount: number } = await this.user2menuService.create(createDto);
-        this.logger.log(`创建用户2菜单: 成功 ${successCount}, 失败 ${failCount}`);
+        const { success, fail }: { success: User2menu[]; fail: User2menuCreateDto[] } = await this.user2menuService.create(createDto);
+        this.logger.log(`创建用户2菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`);
         return {
-            data: { successCount, failCount },
+            data: { success, fail },
             message: `创建用户2菜单成功`,
             statusCode: HttpStatus.CREATED,
             success: true

@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
-import { useRoute } from "vue-router"
-import { useMenuStore } from "@/store"
-import Logo from "./logo.vue"
+import { ref, computed } from 'vue"
+import { useRoute } from 'vue-router"
+import { useMenuStore } from '@/store"
+import Logo from './logo.vue"
 
 const collapsed = ref(false)
 const menuStore = useMenuStore()

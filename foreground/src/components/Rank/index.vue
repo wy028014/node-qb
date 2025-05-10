@@ -12,8 +12,8 @@
   </el-select>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from "vue"
-import RankData from "./data"
+import { onMounted, watch } from 'vue"
+import RankData from './data"
 const props = defineProps({
   id: {
     type: String,

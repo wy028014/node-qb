@@ -6,7 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/common/filters/http-exception.filter.ts
  * @Description: 异常 过滤器
  */
-import { formatDate } from "@/plugins";
+import { formatDate } from '@/plugins';
 import {
     ArgumentsHost,
     Catch,
@@ -14,7 +14,7 @@ import {
     HttpException,
     HttpStatus,
     Logger,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {

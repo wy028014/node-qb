@@ -2,36 +2,21 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:35:01
+ * @LastEditTime: 2025-05-10 15:38:22
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.controller.ts
  * @Description: 菜单 控制层
  */
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpCode,
-    HttpStatus,
-    Param,
-    ParseUUIDPipe,
-    Patch,
-    Post,
-    Query,
-    UseInterceptors,
-    UsePipes,
-    ValidationPipe,
-} from "@nestjs/common";
-import { CustomLogger } from "@/plugins";
-import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
-import { Menu } from "./menu.entity";
-import { MenuCreateDto } from "./dto/create.dto";
-import { MenuUpdateDto } from "./dto/update.dto";
-import { MenuService } from "./menu.service";
-import { MenuQueryDto } from "./dto/query.dto";
-import { MyResDto } from "@/common/dto/response.dto";
-import { ResponseInterceptor } from "@/common/interceptors/response.interceptor";
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Query, Body, Param, HttpStatus, HttpCode, UsePipes, ValidationPipe, ParseUUIDPipe, Patch, Delete, UseInterceptors } from '@nestjs/common';
+import { CustomLogger } from '@/plugins';
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
+import { Menu } from './menu.entity';
+import { MenuCreateDto } from './dto/create.dto';
+import { MenuUpdateDto } from './dto/update.dto';
+import { MenuService } from './menu.service';
+import { MenuQueryDto } from './dto/query.dto';
+import { MyResDto } from '@/common/dto/response.dto';
+import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
 
 @ApiTags(`菜单`)
 @Controller(`menu`)
@@ -51,10 +36,10 @@ export class MenuController {
     async create(
         @Body() createDto: MenuCreateDto[],
     ): Promise<MyResDto> {
-        const { successCount, failCount }: { successCount: number; failCount: number } = await this.menuService.create(createDto);
-        this.logger.log(`创建菜单: 成功 ${successCount}, 失败 ${failCount}`);
+        const { success, fail }: { success: Menu[]; fail: MenuCreateDto[] } = await this.menuService.create(createDto);
+        this.logger.log(`创建菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`);
         return {
-            data: { successCount, failCount },
+            data: { success, fail },
             message: `创建菜单成功`,
             statusCode: HttpStatus.CREATED,
             success: true,

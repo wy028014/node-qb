@@ -6,9 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.entity.ts
  * @Description: 菜单 实体
  */
-import { baseEntity } from "@/common/entities/base.entity";
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
-import { User2menu } from "@/modules/user2menu/user2menu.entity";
+import { baseEntity } from '@/common/entities/base.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { User2menu } from '@/modules/user2menu/user2menu.entity';
 
 @Entity()
 export class Menu extends baseEntity {

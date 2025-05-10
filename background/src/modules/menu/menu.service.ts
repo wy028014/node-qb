@@ -2,18 +2,18 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:29:21
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:52:36
+ * @LastEditTime: 2025-05-10 15:32:58
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.service.ts
  * @Description: 菜单 服务层
  */
-import { CustomLogger } from "@/plugins";
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Menu } from "./menu.entity";
-import { MenuCreateDto } from "./dto/create.dto";
-import { MenuUpdateDto } from "./dto/update.dto";
-import { MenuQueryDto } from "./dto/query.dto";
-import { Repository, SelectQueryBuilder, UpdateResult } from "typeorm";
+import { CustomLogger } from '@/plugins';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Menu } from './menu.entity';
+import { MenuCreateDto } from './dto/create.dto';
+import { MenuUpdateDto } from './dto/update.dto';
+import { MenuQueryDto } from './dto/query.dto';
+import { EntityManager, Repository, SelectQueryBuilder, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class MenuService {
@@ -24,8 +24,9 @@ export class MenuService {
   ) { }
 
   // 创建菜单
-  async create(createDto: MenuCreateDto[]): Promise<{ successCount: number, failCount: number }> {
-    if (createDto.length === 0) return { successCount: 0, failCount: 0 };
+  async create(createDto: MenuCreateDto[]): Promise<{ success: Menu[], fail: MenuCreateDto[] }> {
+    if (createDto.length === 0) return { success: [], fail: [] };
+    const result: { success: Menu[]; fail: MenuCreateDto[]; } = { success: [], fail: [] };
     // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingNames: string[] = await this.menuRepository
       .createQueryBuilder(`menu`)
@@ -33,25 +34,26 @@ export class MenuService {
       .where(`menu.name IN (:...names)`, { names: createDto.map((dto: MenuCreateDto) => dto.name) })
       .getMany()
       .then((menus: Menu[]) => menus.map((menu: Menu) => menu.name));
-    // 2) 过滤出不存在的菜单(避免重复检查)
+    // 2) 将不需要新建的菜单存入 fail 数组
+    const existingDtos: MenuCreateDto[] = createDto.filter((dto: MenuCreateDto) => existingNames.includes(dto.name));
+    result.fail.push(...existingDtos);
+    // 3) 将需要新建的菜单存入 validDtos 数组
     const validDtos: MenuCreateDto[] = createDto.filter((dto: MenuCreateDto) => !existingNames.includes(dto.name));
-    // 3) 批量创建实体(利用TypeORM批量插入)
-    const menusToSave: Menu[] = validDtos.map((dto: MenuCreateDto) => {
-      return this.menuRepository.create(dto);
+    // 4) 使用事务批量创建有效记录
+    await this.menuRepository.manager.transaction(async (entityManager: EntityManager) => {
+      for (const dto of validDtos) {
+        try {
+          const entity: Menu = entityManager.create(Menu, dto);
+          const savedEntity: Menu = await entityManager.save(entity);
+          result.success.push(savedEntity);
+        } catch (error) {
+          // 处理单个记录保存失败的情况
+          this.logger.error(`保存操作记录失败: ${dto}`, error);
+          result.fail.push(dto);
+        }
+      }
     });
-    // 4) 批量保存(单次数据库操作)
-    let saved: Menu[] = [];
-    try {
-      saved = await this.menuRepository.save(menusToSave);
-    } catch (error) {
-      // 处理批量保存时的异常(如唯一约束冲突，需根据业务需求调整)
-      this.logger.error(`批量保存菜单失败`, error);
-      return { successCount: 0, failCount: createDto.length };
-    }
-    return {
-      successCount: saved.length,
-      failCount: createDto.length - saved.length
-    };
+    return result;
   }
 
   // 自定义查询菜单

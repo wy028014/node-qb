@@ -6,8 +6,8 @@
  * @FilePath: /nodejs-qb/background/src/user/dto/create.dto.ts
  * @Description: 用户 新增dto
  */
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class UserCreateDto {
     @ApiProperty({

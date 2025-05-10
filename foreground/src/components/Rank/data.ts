@@ -1,6 +1,6 @@
-import { reactive } from "vue"
-import { RankApi } from "@/api/modules"
-import { Option } from "element-plus/es/components/select-v2/src/select.types.mjs"
+import { reactive } from 'vue"
+import { RankApi } from '@/api/modules"
+import { Option } from 'element-plus/es/components/select-v2/src/select.types.mjs"
 
 const RankData: {
   loading: boolean

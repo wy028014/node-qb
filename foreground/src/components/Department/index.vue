@@ -11,10 +11,10 @@
   </el-tree>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from "vue"
-import { useInfoStore } from "@/store"
-import DepartmentData from "./data"
-import { TreeNodeData } from "element-plus/lib/components/tree-v2/src/types.js"
+import { onMounted, watch } from 'vue"
+import { useInfoStore } from '@/store"
+import DepartmentData from './data"
+import { TreeNodeData } from 'element-plus/lib/components/tree-v2/src/types.js"
 const props = defineProps({
   gonganchuId: {
     type: String,

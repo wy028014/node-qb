@@ -2,17 +2,17 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 08:02:26
+ * @LastEditTime: 2025-05-10 15:46:47
  * @FilePath: /nodejs-qb/background/src/user2menu/user2menu.service.ts
  * @Description: 用户2菜单 服务层
  */
-import { CustomLogger } from "@/plugins";
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, SelectQueryBuilder, UpdateResult } from "typeorm";
-import { User2menu } from "./user2menu.entity";
-import { User2menuCreateDto } from "./dto/create.dto";
-import { User2menuQueryDto } from "./dto/query.dto";
+import { Brackets, EntityManager, Repository, SelectQueryBuilder, UpdateResult } from 'typeorm';
+import { CustomLogger } from '@/plugins';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User2menu } from './user2menu.entity';
+import { User2menuCreateDto } from './dto/create.dto';
+import { User2menuQueryDto } from './dto/query.dto';
 
 @Injectable()
 export class User2menuService {
@@ -23,34 +23,55 @@ export class User2menuService {
   ) { }
 
   // 批量创建用户2菜单
-  async create(createDto: User2menuCreateDto[]): Promise<{ successCount: number, failCount: number }> {
-    if (createDto.length === 0) return { successCount: 0, failCount: 0 };
+  async create(createDto: User2menuCreateDto[]): Promise<{ success: User2menu[], fail: User2menuCreateDto[] }> {
+    if (createDto.length === 0) return { success: [], fail: [] };
+    const result: { success: User2menu[]; fail: User2menuCreateDto[]; } = { success: [], fail: [] };
     // 1) 批量获取已存在的名称(减少数据库查询次数)
-    const existingUserIds: string[] = await this.user2menuRepository
+    const existingRelations: User2menu[] = await this.user2menuRepository
       .createQueryBuilder(`user2menu`)
-      .select(`user2menu.userId`, `userId`)
-      .where(`user2menu.userId IN (:...userIds)`, { userIds: createDto.map((dto: User2menuCreateDto) => dto.userId) })
-      .getRawMany<{ userId: string }>()
-      .then((rows: { userId: string; }[]) => rows.map((row: { userId: string; }) => row.userId));
-    // 2) 过滤出不存在的用户(避免重复检查)
-    const validDtos: User2menuCreateDto[] = createDto.filter((dto: User2menuCreateDto) => !existingUserIds.includes(dto.userId));
-    // 3) 批量创建实体(利用TypeORM批量插入)
-    const user2menusToSave: User2menu[] = validDtos.map((dto: User2menuCreateDto) => {
-      return this.user2menuRepository.create(dto);
+      .where(
+        new Brackets(qb => {
+          createDto.forEach((dto, index) => {
+            qb.orWhere(
+              `(user2menu.userId = :userId${index} AND user2menu.menuId = :menuId${index})`,
+              {
+                [`userId${index}`]: dto.userId,
+                [`menuId${index}`]: dto.menuId,
+              }
+            );
+          });
+        })
+      )
+      .getMany();
+    // 创建一个由userId和menuId组成的唯一键集合
+    const existingKeys = existingRelations.map(
+      relation => `${relation.user.id}-${relation.user.id}`
+    );
+    // 2) 将已存在的关联存入fail数组
+    const existingDtos = createDto.filter(
+      dto => existingKeys.includes(`${dto.userId}-${dto.menuId}`)
+    );
+    result.fail.push(...existingDtos);
+
+    // 3) 将需要新建的关联存入validDtos数组
+    const validDtos = createDto.filter(
+      dto => !existingKeys.includes(`${dto.userId}-${dto.menuId}`)
+    );
+    // 4) 使用事务批量创建有效记录
+    await this.user2menuRepository.manager.transaction(async (entityManager: EntityManager) => {
+      for (const dto of validDtos) {
+        try {
+          const entity: User2menu = entityManager.create(User2menu, dto);
+          const savedEntity: User2menu = await entityManager.save(entity);
+          result.success.push(savedEntity);
+        } catch (error) {
+          // 处理单个记录保存失败的情况
+          this.logger.error(`保存用户失败: ${dto}`, error);
+          result.fail.push(dto);
+        }
+      }
     });
-    // 4) 批量保存(单次数据库操作)
-    let saved: User2menu[] = [];
-    try {
-      saved = await this.user2menuRepository.save(user2menusToSave);
-    } catch (error) {
-      // 处理批量保存时的异常(如唯一约束冲突，需根据业务需求调整)
-      this.logger.error(`批量保存用户2菜单失败`, error);
-      return { successCount: 0, failCount: createDto.length };
-    }
-    return {
-      successCount: saved.length,
-      failCount: createDto.length - saved.length
-    };
+    return result;
   }
 
   // 多条件查询用户2菜单

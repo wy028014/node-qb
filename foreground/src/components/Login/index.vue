@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import { FormInstance } from "element-plus"
-import loginData from "./data"
-import { useRouter } from "vue-router"
-import { ref } from "vue"
+import { FormInstance } from 'element-plus"
+import loginData from './data"
+import { useRouter } from 'vue-router"
+import { ref } from 'vue"
 
 const router = useRouter()
 const { captchaSrc, data, rules, btn_captcha, btn_login } = loginData()

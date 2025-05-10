@@ -6,12 +6,12 @@
  * @FilePath: /nodejs-qb/background/src/modules/menu/dto/query.dto.ts
  * @Description: 菜单 查询dto
  */
-import { ApiProperty } from "@nestjs/swagger";
-import { FindOptionsOrder } from "typeorm";
-import { IsOptional, IsObject, IsInt, Min } from "class-validator";
-import { Menu } from "../menu.entity";
-import { Type } from "class-transformer";
-import { QueryDto } from "@/common/dto/query.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { FindOptionsOrder } from 'typeorm';
+import { IsOptional, IsObject, IsInt, Min } from 'class-validator';
+import { Menu } from '../menu.entity';
+import { Type } from 'class-transformer';
+import { QueryDto } from '@/common/dto/query.dto';
 
 export class MenuQueryDto extends QueryDto {
     @ApiProperty({

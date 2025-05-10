@@ -1,7 +1,7 @@
-import { FormInstance } from "element-plus";
-import { reactive, ref } from "vue";
-import { useInfoStore, useMenuStore } from "@/store";
-import { useRouter } from "vue-router";
+import { FormInstance } from 'element-plus';
+import { reactive, ref } from 'vue';
+import { useInfoStore, useMenuStore } from '@/store';
+import { useRouter } from 'vue-router';
 
 const loginData = () => {
   const captchaSrc = ref<string>(`/api/base`);

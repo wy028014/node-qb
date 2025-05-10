@@ -1,5 +1,5 @@
-import { RouteLocationNormalized, NavigationGuardNext } from "vue-router";
-import { useAuthStore } from "@/stores/permission.store"; // 假设这是你的权限存储文件
+import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+import { useAuthStore } from '@/stores/permission.store'; // 假设这是你的权限存储文件
 
 export const authGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const authStore = useAuthStore();

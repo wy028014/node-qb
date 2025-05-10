@@ -2,20 +2,21 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:00:05
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 08:04:28
+ * @LastEditTime: 2025-05-10 14:10:01
  * @FilePath: /nodejs-qb/background/src/main.ts
  * @Description: 项目主文件
  */
-import config from "./config";
-import fastifyStatic from "@fastify/static";
-import qs from "qs";
-import * as swaggerUiDist from "swagger-ui-dist";
-import { AppModule } from "./app.module";
-import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Logger } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { RawServerDefault } from "fastify";
+import config from './config';
+import fastifyStatic from '@fastify/static';
+import qs from 'qs';
+import * as swaggerUiDist from 'swagger-ui-dist';
+import { AppModule } from './app.module';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { Logger } from '@nestjs/common';
+import { LogInterceptor } from '@/common/interceptors/log.interceptor';
+import { NestFactory } from '@nestjs/core';
+import { RawServerDefault } from 'fastify';
 
 async function bootstrap() {
   // 1. 用 FastifyAdapter 创建应用
@@ -23,6 +24,8 @@ async function bootstrap() {
     querystringParser: (str: string) => qs.parse(str),  // 使用 qs 解析深度对象
   }));
   const logger: Logger = new Logger(`main.ts`);
+  // 注册全局拦截器
+    app.useGlobalInterceptors(new LogInterceptor());
   // 2. 生成 OpenAPI 文档
   const swaggerConfig: Omit<OpenAPIObject, `paths`> = new DocumentBuilder()
     .addBearerAuth()

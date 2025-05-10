@@ -6,10 +6,10 @@
  * @FilePath: /nodejs-qb/foreground/src/plugins/modules/dayjs.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import dayjs from "dayjs"
-import isLeapYear from "dayjs/plugin/isLeapYear"
-import relativeTime from "dayjs/plugin/relativeTime.js"
-import utc from "dayjs/plugin/utc"
+import dayjs from 'dayjs"
+import isLeapYear from 'dayjs/plugin/isLeapYear"
+import relativeTime from 'dayjs/plugin/relativeTime.js"
+import utc from 'dayjs/plugin/utc"
 import "dayjs/locale/zh-cn"
 
 dayjs.extend(isLeapYear)

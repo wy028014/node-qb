@@ -10,8 +10,8 @@
   </el-select>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from "vue"
-import GenderData from "./data"
+import { onMounted, watch } from 'vue"
+import GenderData from './data"
 const props = defineProps({
   id: {
     type: String,

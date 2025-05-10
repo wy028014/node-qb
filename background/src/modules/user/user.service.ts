@@ -2,18 +2,18 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:56:17
+ * @LastEditTime: 2025-05-10 15:36:14
  * @FilePath: /nodejs-qb/background/src/user/user.service.ts
  * @Description: 用户 服务层
  */
-import { CustomLogger } from "@/plugins";
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, SelectQueryBuilder, UpdateResult } from "typeorm";
-import { User } from "./user.entity";
-import { UserCreateDto } from "./dto/create.dto";
-import { UserQueryDto } from "./dto/query.dto";
-import { UserUpdateDto } from "./dto/update.dto";
+import { CustomLogger } from '@/plugins';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository, SelectQueryBuilder, UpdateResult } from 'typeorm';
+import { User } from './user.entity';
+import { UserCreateDto } from './dto/create.dto';
+import { UserQueryDto } from './dto/query.dto';
+import { UserUpdateDto } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
@@ -24,34 +24,36 @@ export class UserService {
   ) { }
 
   // 创建用户
-  async create(createDto: UserCreateDto[]): Promise<{ successCount: number, failCount: number }> {
-    if (createDto.length === 0) return { successCount: 0, failCount: 0 };
+  async create(createDto: UserCreateDto[]): Promise<{ success: User[], fail: UserCreateDto[] }> {
+    if (createDto.length === 0) return { success: [], fail: [] };
+    const result: { success: User[]; fail: UserCreateDto[]; } = { success: [], fail: [] };
     // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingNames: string[] = await this.userRepository
       .createQueryBuilder(`user`)
       .select(`user.username`)
-      .where(`user.username IN (:...usernames)`, { usernames: createDto.map((dto: UserCreateDto) => dto.username) })
+      .where(`user.username IN (:...username)`, { username: createDto.map((dto: UserCreateDto) => dto.username) })
       .getMany()
       .then((users: User[]) => users.map((user: User) => user.username));
-    // 2) 过滤出不存在的用户(避免重复检查)
+    // 2) 将不需要新建的菜单存入 fail 数组
+    const existingDtos: UserCreateDto[] = createDto.filter((dto: UserCreateDto) => existingNames.includes(dto.username));
+    result.fail.push(...existingDtos);
+    // 3) 将需要新建的菜单存入 validDtos 数组
     const validDtos: UserCreateDto[] = createDto.filter((dto: UserCreateDto) => !existingNames.includes(dto.username));
-    // 3) 批量创建实体(利用TypeORM批量插入)
-    const usersToSave: User[] = validDtos.map((dto: UserCreateDto) => {
-      return this.userRepository.create(dto);
+    // 4) 使用事务批量创建有效记录
+    await this.userRepository.manager.transaction(async (entityManager: EntityManager) => {
+      for (const dto of validDtos) {
+        try {
+          const entity: User = entityManager.create(User, dto);
+          const savedEntity: User = await entityManager.save(entity);
+          result.success.push(savedEntity);
+        } catch (error) {
+          // 处理单个记录保存失败的情况
+          this.logger.error(`保存用户失败: ${dto}`, error);
+          result.fail.push(dto);
+        }
+      }
     });
-    // 4) 批量保存(单次数据库操作)
-    let saved: User[] = [];
-    try {
-      saved = await this.userRepository.save(usersToSave);
-    } catch (error) {
-      // 处理批量保存时的异常(如唯一约束冲突，需根据业务需求调整)
-      this.logger.error(`批量保存用户失败`, error);
-      return { successCount: 0, failCount: createDto.length };
-    }
-    return {
-      successCount: saved.length,
-      failCount: createDto.length - saved.length
-    };
+    return result;
   }
 
   // 自定义查询用户

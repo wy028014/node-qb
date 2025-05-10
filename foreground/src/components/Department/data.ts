@@ -1,6 +1,6 @@
-import { reactive } from "vue";
-import { DepartmentApi } from "@/api/modules/";
-import { useInfoStore } from "@/store";
+import { reactive } from 'vue';
+import { DepartmentApi } from '@/api/modules/';
+import { useInfoStore } from '@/store';
 
 const DepartmentData: {
   value: string;

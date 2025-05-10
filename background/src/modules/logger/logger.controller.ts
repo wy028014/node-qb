@@ -1,51 +1,49 @@
 /*
  * @Author: 王野 18545455617@163.com
- * @Date: 2025-05-05 09:31:08
+ * @Date: 2025-05-10 14:07:40
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:39:37
- * @FilePath: /nodejs-qb/background/src/modules/user/user.controller.ts
- * @Description: 用户 控制层
+ * @LastEditTime: 2025-05-10 15:38:26
+ * @FilePath: /nodejs-qb/background/src/modules/logger/logger.controller.ts
+ * @Description: 操作记录 控制层
  */
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Query, Body, Param, HttpStatus, HttpCode, UsePipes, ValidationPipe, ParseUUIDPipe, Patch, Delete, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Query, Body, Param, HttpStatus, HttpCode, UsePipes, ValidationPipe, ParseUUIDPipe, Patch, Delete } from '@nestjs/common';
 import { CustomLogger } from '@/plugins';
-import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
+import { Logger } from './logger.entity';
+import { LoggerCreateDto } from './dto/create.dto';
+import { LoggerQueryDto } from './dto/query.dto';
+import { LoggerService } from './logger.service';
+import { LoggerUpdateDto } from './dto/update.dto';
 import { MyResDto } from '@/common/dto/response.dto';
-import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
-import { User } from './user.entity';
-import { UserCreateDto } from './dto/create.dto';
-import { UserQueryDto } from './dto/query.dto';
-import { UserService } from './user.service';
-import { UserUpdateDto } from './dto/update.dto';
 
-@ApiTags(`用户`)
-@Controller(`user`)
-@UseInterceptors(HttpExceptionFilter, ResponseInterceptor)
-export class UserController {
+@ApiTags(`操作记录`)
+@Controller(`logger`)
+export class LoggerController {
     constructor(
-        private readonly logger: CustomLogger,
-        private readonly userService: UserService,
+        private readonly logger: CustomLogger, private readonly loggerService: LoggerService,
     ) { }
 
     @Post()
-    @ApiBody({ description: `用户列表`, type: [UserCreateDto] })
-    @ApiOperation({ summary: `批量创建用户` })
+    @ApiBody({ description: `操作记录列表`, type: [LoggerCreateDto] })
+    @ApiOperation({ summary: `批量创建操作记录` })
     @ApiResponse({ description: `批量创建成功`, status: HttpStatus.CREATED, type: MyResDto })
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
-    async create(@Body() createDto: UserCreateDto[]): Promise<MyResDto> {
-        const { success, fail }: { success: User[]; fail: UserCreateDto[] } = await this.userService.create(createDto);
-        this.logger.log(`创建用户: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`);
+    async create(
+        @Body() createDto: LoggerCreateDto[],
+    ): Promise<MyResDto> {
+        const { success, fail }: { success: Logger[], fail: LoggerCreateDto[] } = await this.loggerService.create(createDto);
+        this.logger.log(`创建操作记录: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`);
         return {
             data: { success, fail },
-            message: `创建用户完成`,
+            message: `创建操作记录成功`,
             statusCode: HttpStatus.CREATED,
             success: true,
         };
     }
 
     @Get()
-    @ApiOperation({ summary: `根据条件查找用户` })
+    @ApiOperation({ summary: `根据条件查找操作记录` })
     @ApiQuery({
         name: `equals`,
         required: false,
@@ -54,7 +52,7 @@ export class UserController {
         schema: {
             type: `object`,
             properties: {
-                username: { type: `string`, example: `028014` },
+                icon: { type: `string`, example: `tool` },
             },
         },
     })
@@ -66,7 +64,7 @@ export class UserController {
         schema: {
             type: `object`,
             properties: {
-                username: { type: `string`, example: `028014` },
+                title: { type: `string`, example: `管理` },
             },
         },
     })
@@ -77,7 +75,7 @@ export class UserController {
         explode: true,
         schema: {
             type: `array`,
-            items: { type: `string`, example: `user2menus.menu` },
+            items: { type: `string`, example: `menu` },
         },
     })
     @ApiQuery({
@@ -102,47 +100,47 @@ export class UserController {
         transformOptions: { enableImplicitConversion: true },
     }))
     async find(
-        @Query() query: UserQueryDto,
+        @Query() query: LoggerQueryDto,
     ): Promise<MyResDto> {
-        const { list, total }: { list: User[], total: number } = await this.userService.find(query);
+        const { list, total }: { list: Logger[], total: number } = await this.loggerService.find(query);
         return {
             data: { list, total },
-            message: `查询用户成功`,
+            message: `查询操作记录成功`,
             statusCode: HttpStatus.OK,
             success: true,
         };
     }
 
     @Patch(`:id`)
-    @ApiOperation({ summary: `根据 id 更新用户` })
+    @ApiOperation({ summary: `根据 ID 更新操作记录` })
     @ApiResponse({ description: `更新成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async update(
         @Param(`id`, ParseUUIDPipe) id: string,
-        @Body() updateDto: UserUpdateDto,
+        @Body() updateDto: LoggerUpdateDto,
     ): Promise<MyResDto> {
-        const updated: User = await this.userService.update(id, updateDto);
-        this.logger.log(`更新用户成功, id: ${id}`);
+        const updated: Logger = await this.loggerService.update(id, updateDto);
+        this.logger.log(`更新操作记录成功, ID: ${id}`);
         return {
             data: [updated],
-            message: `用户更新成功`,
+            message: `操作记录更新成功`,
             statusCode: HttpStatus.OK,
             success: true,
         };
     }
 
     @Delete(`:id`)
-    @ApiOperation({ summary: `根据 id 软删除用户` })
+    @ApiOperation({ summary: `根据 ID 软删除操作记录` })
     @ApiResponse({ description: `删除成功`, status: HttpStatus.OK, type: MyResDto })
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
     async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-        await this.userService.remove(id);
-        this.logger.log(`软删除用户成功, id: ${id}`);
+        await this.loggerService.remove(id);
+        this.logger.log(`软删除操作记录成功, ID: ${id}`);
         return {
             data: null,
-            message: `用户删除成功`,
+            message: `操作记录删除成功`,
             statusCode: HttpStatus.OK,
             success: true,
         };

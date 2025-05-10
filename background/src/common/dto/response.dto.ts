@@ -6,7 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/types/response.dto.ts
  * @Description: 返回值 dto
  */
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class MyResDto {
   @ApiProperty({ required: false, description: `响应数据` })

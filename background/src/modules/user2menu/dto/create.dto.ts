@@ -7,8 +7,8 @@
  * @Description: 用户2菜单 新增dto
  */
 
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class User2menuCreateDto {
     @ApiProperty({

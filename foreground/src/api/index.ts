@@ -1,5 +1,5 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const api = axios.create({
     baseURL: "http://localhost:3000",
@@ -29,7 +29,7 @@ api.interceptors.response.use(
                 return api(originalRequest);
             } catch (refreshError) {
                 // 刷新 Token 失败, 跳转到登录页面
-                window.location.href = "/login";
+                window.location.href = "/login';
             }
         }
         return Promise.reject(error);

@@ -6,7 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/app.controller.ts
  * @Description: app 控制层
  */
-import { Controller, Get, Redirect } from "@nestjs/common";
+import { Controller, Get, Redirect } from '@nestjs/common';
 
 @Controller()
 export class AppController {
