@@ -7,15 +7,15 @@
  * @Description: 公用数据
  */
 export enum HTTPMethod {
-    CONNECT = `CONNECT`,
-    DELETE = `DELETE`,
-    GET = `GET`,
-    HEAD = `HEAD`,
-    OPTIONS = `OPTIONS`,
-    PATCH = `PATCH`,
-    POST = `POST`,
-    PUT = `PUT`,
-    TRACE = `TRACE`,
-    LINK = `LINK`,
-    UNLINK = `UNLINK`
+  CONNECT = `CONNECT`,
+  DELETE = `DELETE`,
+  GET = `GET`,
+  HEAD = `HEAD`,
+  OPTIONS = `OPTIONS`,
+  PATCH = `PATCH`,
+  POST = `POST`,
+  PUT = `PUT`,
+  TRACE = `TRACE`,
+  LINK = `LINK`,
+  UNLINK = `UNLINK`,
 }

@@ -7,15 +7,16 @@
  * @Description: 操作记录 模块
  */
 import { CustomLogger } from '@/plugins';
-import { LoggerEntity } from './logger.entity';
+import { Logger } from './logger.entity';
 import { LoggerController } from './logger.controller';
 import { LoggerService } from './logger.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-    controllers: [LoggerController],
-    imports: [TypeOrmModule.forFeature([LoggerEntity])],
-    providers: [CustomLogger, LoggerService],
+  controllers: [LoggerController],
+  exports: [LoggerService],
+  imports: [TypeOrmModule.forFeature([Logger])],
+  providers: [CustomLogger, LoggerService],
 })
-export class LoggerModule { }
+export class LoggerModule {}

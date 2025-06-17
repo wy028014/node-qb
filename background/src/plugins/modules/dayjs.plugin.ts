@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
-import "dayjs/locale/zh-cn';
+import 'dayjs/locale/zh-cn';
 
 // 扩展 dayjs 功能
 dayjs.extend(isLeapYear);
@@ -27,7 +27,7 @@ export const Dayjs = dayjs;
  * @returns 格式化字符串
  */
 export function formatDate(date: Date | string | number): string {
-    return dayjs(date).format(`YYYY-MM-DD HH:mm:ss.SSSS`);
+  return dayjs(date).format(`YYYY-MM-DD HH:mm:ss.SSSS`);
 }
 
 /**
@@ -37,13 +37,15 @@ export function formatDate(date: Date | string | number): string {
  * @throws {Error} 如果身份证号码不是18位
  */
 export function func_getAgeFromIdCard(idCardNumber: string): number {
-    if (idCardNumber.length !== 18) {
-        throw new Error(`输入的身份证号码 ${idCardNumber} 长度不为18位, 必须是18位身份证号码`);
-    }
-    const birthDateStr: string = idCardNumber.substring(6, 14);
-    const birthDate: dayjs.Dayjs = dayjs(birthDateStr, `YYYYMMDD`);
-    const today: dayjs.Dayjs = dayjs.utc().local();
-    const age: number = today.diff(birthDate, `years`);
+  if (idCardNumber.length !== 18) {
+    throw new Error(
+      `输入的身份证号码 ${idCardNumber} 长度不为18位, 必须是18位身份证号码`,
+    );
+  }
+  const birthDateStr: string = idCardNumber.substring(6, 14);
+  const birthDate: dayjs.Dayjs = dayjs(birthDateStr, `YYYYMMDD`);
+  const today: dayjs.Dayjs = dayjs.utc().local();
+  const age: number = today.diff(birthDate, `years`);
 
-    return parseInt(age.toString(), 10);
+  return parseInt(age.toString(), 10);
 }

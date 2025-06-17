@@ -9,23 +9,23 @@
 import { IsOptional, IsString } from 'class-validator';
 
 export class MenuUpdateDto {
-    @IsOptional()
-    @IsString()
-    icon?: string;
+  @IsOptional()
+  @IsString()
+  icon?: string;
 
-    @IsOptional()
-    @IsString()
-    name?: string;
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-    @IsOptional()
-    @IsString()
-    parentId?: string;
+  @IsOptional()
+  @IsString()
+  parentId?: string;
 
-    @IsOptional()
-    @IsString()
-    path?: string;
+  @IsOptional()
+  @IsString()
+  path?: string;
 
-    @IsOptional()
-    @IsString()
-    title?: string;
+  @IsOptional()
+  @IsString()
+  title?: string;
 }

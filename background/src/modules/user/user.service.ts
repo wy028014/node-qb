@@ -9,7 +9,12 @@
 import { CustomLogger } from '@/plugins';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository, SelectQueryBuilder, UpdateResult } from 'typeorm';
+import {
+  EntityManager,
+  Repository,
+  SelectQueryBuilder,
+  UpdateResult,
+} from 'typeorm';
 import { User } from './user.entity';
 import { UserCreateDto } from './dto/create.dto';
 import { UserQueryDto } from './dto/query.dto';
@@ -21,44 +26,58 @@ export class UserService {
     private readonly logger: CustomLogger,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   // 创建用户
-  async create(createDto: UserCreateDto[]): Promise<{ success: User[], fail: UserCreateDto[] }> {
+  async create(
+    createDto: UserCreateDto[],
+  ): Promise<{ success: User[]; fail: UserCreateDto[] }> {
     if (createDto.length === 0) return { success: [], fail: [] };
-    const result: { success: User[]; fail: UserCreateDto[]; } = { success: [], fail: [] };
+    const result: { success: User[]; fail: UserCreateDto[] } = {
+      success: [],
+      fail: [],
+    };
     // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingNames: string[] = await this.userRepository
       .createQueryBuilder(`user`)
       .select(`user.username`)
-      .where(`user.username IN (:...username)`, { username: createDto.map((dto: UserCreateDto) => dto.username) })
+      .where(`user.username IN (:...username)`, {
+        username: createDto.map((dto: UserCreateDto) => dto.username),
+      })
       .getMany()
       .then((users: User[]) => users.map((user: User) => user.username));
     // 2) 将不需要新建的菜单存入 fail 数组
-    const existingDtos: UserCreateDto[] = createDto.filter((dto: UserCreateDto) => existingNames.includes(dto.username));
+    const existingDtos: UserCreateDto[] = createDto.filter(
+      (dto: UserCreateDto) => existingNames.includes(dto.username),
+    );
     result.fail.push(...existingDtos);
     // 3) 将需要新建的菜单存入 validDtos 数组
-    const validDtos: UserCreateDto[] = createDto.filter((dto: UserCreateDto) => !existingNames.includes(dto.username));
+    const validDtos: UserCreateDto[] = createDto.filter(
+      (dto: UserCreateDto) => !existingNames.includes(dto.username),
+    );
     // 4) 使用事务批量创建有效记录
-    await this.userRepository.manager.transaction(async (entityManager: EntityManager) => {
-      for (const dto of validDtos) {
-        try {
-          const entity: User = entityManager.create(User, dto);
-          const savedEntity: User = await entityManager.save(entity);
-          result.success.push(savedEntity);
-        } catch (error) {
-          // 处理单个记录保存失败的情况
-          this.logger.error(`保存用户失败: ${dto}`, error);
-          result.fail.push(dto);
+    await this.userRepository.manager.transaction(
+      async (entityManager: EntityManager) => {
+        for (const dto of validDtos) {
+          try {
+            const entity: User = entityManager.create(User, dto);
+            const savedEntity: User = await entityManager.save(entity);
+            result.success.push(savedEntity);
+          } catch (error) {
+            // 处理单个记录保存失败的情况
+            this.logger.error(`保存用户失败: ${dto}`, error);
+            result.fail.push(dto);
+          }
         }
-      }
-    });
+      },
+    );
     return result;
   }
 
   // 自定义查询用户
   async find(queryDto: UserQueryDto): Promise<{ list: User[]; total: number }> {
-    const qb: SelectQueryBuilder<User> = this.userRepository.createQueryBuilder(`user`);
+    const qb: SelectQueryBuilder<User> =
+      this.userRepository.createQueryBuilder(`user`);
     // 1) 软删除过滤
     qb.where(`user.deletedAt IS NULL`);
     // 2) 普通等值过滤
@@ -93,13 +112,17 @@ export class UserService {
       qb.skip((page - 1) * size).take(size);
     }
     // 7) 执行
-    const [list, total]: [list: User[], total: number] = await qb.getManyAndCount();
+    const [list, total]: [list: User[], total: number] =
+      await qb.getManyAndCount();
     return { list, total };
   }
 
   // 更新用户信息
   async update(id: string, updateDto: UserUpdateDto): Promise<User> {
-    const user: User | undefined = await this.userRepository.preload({ id, ...updateDto });
+    const user: User | undefined = await this.userRepository.preload({
+      id,
+      ...updateDto,
+    });
     if (!user) {
       throw new NotFoundException(`用户 (id: ${id}) 未找到`);
     }

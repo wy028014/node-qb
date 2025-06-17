@@ -11,86 +11,85 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Logger {
-    @PrimaryGeneratedColumn(`uuid`)
-    id: string;
+  @PrimaryGeneratedColumn(`uuid`)
+  id: string;
 
-    @Column({
-        name: `userId`,
-        nullable: true,
-        type: `uuid`,
-        unique: false
-    })
-    userId: string | null;
+  @Column({
+    name: `userId`,
+    nullable: true,
+    type: `uuid`,
+    unique: false,
+  })
+  userId: string | null;
 
-    @Column({
-        default: null,
-        length: 16,
-        name: `ip`,
-        nullable: true,
-        type: `varchar`,
-        unique: false,
-    })
-    ip: string | null;
+  @Column({
+    default: null,
+    length: 16,
+    name: `ip`,
+    nullable: true,
+    type: `varchar`,
+    unique: false,
+  })
+  ip: string | null;
 
-    @Column({
-        length: 64,
-        name: `route`,
-        nullable: false,
-        type: `varchar`,
-        unique: false
-    })
-    route: string;
+  @Column({
+    length: 64,
+    name: `route`,
+    nullable: false,
+    type: `varchar`,
+    unique: false,
+  })
+  route: string;
 
-    @Column({
-        name: `accessMethod`,
-        type: `enum`,
-        enum: HTTPMethod,
-        enumName: `http_method`,
-        nullable: false
+  @Column({
+    name: `accessMethod`,
+    type: `enum`,
+    enum: HTTPMethod,
+    enumName: `http_method`,
+    nullable: false,
+  })
+  accessMethod: string;
 
-    })
-    accessMethod: string;
+  @Column({
+    default: null,
+    name: `accessParams`,
+    nullable: true,
+    type: `varchar`,
+    unique: false,
+  })
+  accessParams: string | null;
 
-    @Column({
-        default: null,
-        name: `accessParams`,
-        nullable: true,
-        type: `varchar`,
-        unique: false
-    })
-    accessParams: string | null;
+  @Column({
+    name: `accessTime`,
+    nullable: false,
+    type: `datetime`,
+    unique: false,
+  })
+  accessTime: Date;
 
-    @Column({
-        name: `accessTime`,
-        nullable: false,
-        type: `datetime`,
-        unique: false
-    })
-    accessTime: Date;
+  @Column({
+    default: null,
+    name: `responseData`,
+    nullable: true,
+    type: `text`,
+    unique: false,
+  })
+  responseData: string | null;
 
-    @Column({
-        default: null,
-        name: `responseData`,
-        nullable: true,
-        type: `text`,
-        unique: false
-    })
-    responseData: string | null;
+  @Column({
+    name: `responseTime`,
+    nullable: false,
+    type: `datetime`,
+    unique: false,
+  })
+  responseTime: Date | null;
 
-    @Column({
-        name: `responseTime`,
-        nullable: false,
-        type: `datetime`,
-        unique: false
-    })
-    responseTime: Date | null;
-
-    @Column({
-        default: false,
-        name: `isSuccess`,
-        nullable: false,
-        type: `boolean`,
-        unique: false
-    })
-    isSuccess: boolean | null;
+  @Column({
+    default: false,
+    name: `isSuccess`,
+    nullable: false,
+    type: `boolean`,
+    unique: false,
+  })
+  isSuccess: boolean | null;
 }

@@ -8,8 +8,11 @@
  */
 import config from './config';
 import { AppController } from './app.controller';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { LoggerModule } from './modules/logger/logger.module';
+import { LoggerService } from './modules/logger/logger.service';
+import { LogInterceptor } from './common/interceptors/log.interceptor';
 import { MenuModule } from './modules/menu/menu.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,14 +20,21 @@ import { UserModule } from './modules/user/user.module';
 import { User2menuModule } from './modules/user2menu/user2menu.module';
 
 @Module({
+  controllers: [AppController],
   imports: [
     TypeOrmModule.forRoot(config.database),
     JwtModule.register(config.jwt),
     LoggerModule,
     MenuModule,
     UserModule,
-    User2menuModule
+    User2menuModule,
   ],
-  controllers: [AppController],
+  providers: [
+    LoggerService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LogInterceptor,
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

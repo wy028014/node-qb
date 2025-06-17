@@ -10,8 +10,7 @@ import { Controller, Get, Redirect } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-
   @Get()
   @Redirect(`http://127.0.0.1:3000/api/`, 302)
-  index(): void { }
+  index(): void {}
 }

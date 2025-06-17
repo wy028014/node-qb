@@ -1,8 +1,15 @@
 {
+	"private": true,
+	"license": "UNLICENSED",
+	"workspaces": [
+		"background",
+		"foreground"
+	],
 	"scripts": {
-		"b": "pnpm --filter background start:dev",
-		"f": "pnpm --filter foreground dev",
-		"dev": "concurrently \"pnpm --filter foreground dev\" \"pnpm --filter background start:dev\""
+		"b": "yarn workspace background start:dev",
+		"f": "yarn workspace foreground dev",
+		"dev": "concurrently \"yarn workspace foreground dev\" \"yarn workspace background start:dev\"",
+		"up": "yarn upgrade && yarn workspaces run upgrade"
 	},
 	"devDependencies": {
 		"concurrently": "^9.1.2"

@@ -14,8 +14,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-    controllers: [MenuController],
-    imports: [TypeOrmModule.forFeature([Menu])],
-    providers: [CustomLogger, MenuService],
+  controllers: [MenuController],
+  imports: [TypeOrmModule.forFeature([Menu])],
+  providers: [CustomLogger, MenuService],
 })
-export class MenuModule { }
+export class MenuModule {}

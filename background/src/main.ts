@@ -7,25 +7,21 @@
  * @Description: 项目主文件
  */
 import config from './config';
-import fastifyStatic from '@fastify/static';
-import qs from 'qs';
+import * as cors from 'cors';
+import * as express from 'express';
+import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerUiDist from 'swagger-ui-dist';
+import * as path from 'path';
 import { AppModule } from './app.module';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Logger } from '@nestjs/common';
-import { LogInterceptor } from '@/common/interceptors/log.interceptor';
-import { NestFactory } from '@nestjs/core';
-import { RawServerDefault } from 'fastify';
+import { NestApplication, NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
   // 1. 用 FastifyAdapter 创建应用
-  const app: NestFastifyApplication<RawServerDefault> = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({
-    querystringParser: (str: string) => qs.parse(str),  // 使用 qs 解析深度对象
-  }));
+  const app: NestApplication =
+    await NestFactory.create(AppModule);
   const logger: Logger = new Logger(`main.ts`);
-  // 注册全局拦截器
-    app.useGlobalInterceptors(new LogInterceptor());
   // 2. 生成 OpenAPI 文档
   const swaggerConfig: Omit<OpenAPIObject, `paths`> = new DocumentBuilder()
     .addBearerAuth()
@@ -33,30 +29,30 @@ async function bootstrap() {
     .setDescription(`接口文档`)
     .setVersion(`1.0.0`)
     .build();
-  const document: OpenAPIObject = SwaggerModule.createDocument(app, swaggerConfig);
-  // 3. 挂载静态资源
-  const uiDistPath: string = swaggerUiDist.getAbsoluteFSPath();
-  app.register(fastifyStatic, {
-    root: uiDistPath,
-    prefix: `/swagger-ui-dist/`,
-    decorateReply: false,
-  });
-  // 4. 设置 SwaggerModule，指向我们刚挂的 v4 资源
-  SwaggerModule.setup(`api`, app, document, {
+  const document: OpenAPIObject = SwaggerModule.createDocument(
+    app,
+    swaggerConfig,
+  );
+  // 3. 启用跨域支持
+  app.use(cors());
+  // 4. 挂载静态资源
+  app.use(`/swagger-ui-dist`, express.static(path.resolve(__dirname, `./node_modules/swagger-ui-dist`)));
+  // 5. 设置 SwaggerModule，指向我们刚挂的 v4 资源
+  const swaggerDocument: OpenAPIObject = SwaggerModule.createDocument(app, swaggerConfig);
+  swaggerUi.setup(app, `/api`, swaggerDocument, {
     customSiteTitle: `项目平台 API 文档`,
     swaggerOptions: {
-      swaggerUiBundleUrl: `/swagger-ui-dist/swagger-ui-bundle.js`,
-      swaggerUiStandalonePresetUrl:
-        `/swagger-ui-dist/swagger-ui-standalone-preset.js`,
       deepLinking: true,
       displayRequestDuration: true,
     },
   });
-  // 5. 启用跨域支持
-  app.enableCors();
-  await app.listen(config.project.port, config.project.host, () => {
-    logger.log(`项目[${config.project.name}] v${config.project.version} 已启动, 访问地址: http://${config.project.host}:${config.project.port}`);
+  // 6. 启动服务器
+  app.listen(config.project.port, config.project.host).then(() => {
+    logger.log(
+      `项目[${config.project.name}] v${config.project.version} 已启动, 访问地址: http://${config.project.host}:${config.project.port}`,
+    );
   });
+
 }
 
 bootstrap();

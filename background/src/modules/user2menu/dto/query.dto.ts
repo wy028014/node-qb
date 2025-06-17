@@ -14,38 +14,38 @@ import { Type } from 'class-transformer';
 import { User2menu } from '@/modules/user2menu/user2menu.entity';
 
 export class User2menuQueryDto extends QueryDto {
-    @ApiProperty({
-        description: "排序条件(键为字段名, 值为排序方向 ASC/DESC)",
-        required: false,
-        type: Object,
-    })
-    @IsOptional()
-    @IsObject()
-    order?: FindOptionsOrder<User2menu>;
+  @ApiProperty({
+    description: '排序条件(键为字段名, 值为排序方向 ASC/DESC)',
+    required: false,
+    type: Object,
+  })
+  @IsOptional()
+  @IsObject()
+  order?: FindOptionsOrder<User2menu>;
 
-    @ApiProperty({
-        description: "页码(从 1 开始)",
-        required: false,
-        type: Number,
-        default: 1,
-        example: 1
-    })
-    @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    @Min(1)
-    page?: number;
+  @ApiProperty({
+    description: '页码(从 1 开始)',
+    required: false,
+    type: Number,
+    default: 1,
+    example: 1,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number;
 
-    @ApiProperty({
-        description: "每页数量",
-        required: false,
-        type: Number,
-        default: 10,
-        example: 10
-    })
-    @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    @Min(1)
-    size?: number;
+  @ApiProperty({
+    description: '每页数量',
+    required: false,
+    type: Number,
+    default: 10,
+    example: 10,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  size?: number;
 }

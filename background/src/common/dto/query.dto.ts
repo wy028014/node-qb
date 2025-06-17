@@ -11,37 +11,39 @@ import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class QueryDto {
-    @ApiProperty({
-        description: `相等字段查询`,
-        required: false,
-        type: Object,
-    })
-    @IsOptional()
-    @IsObject()
-    equals?: Record<string, any>;
+  @ApiProperty({
+    description: `相等字段查询`,
+    required: false,
+    type: Object,
+  })
+  @IsOptional()
+  @IsObject()
+  equals?: Record<string, any>;
 
-    @ApiProperty({
-        description: `匹配字段查询`,
-        required: false,
-        type: Object,
-    })
-    @IsOptional()
-    @IsObject()
-    like?: Record<string, string>;
+  @ApiProperty({
+    description: `匹配字段查询`,
+    required: false,
+    type: Object,
+  })
+  @IsOptional()
+  @IsObject()
+  like?: Record<string, string>;
 
-    @ApiProperty({
-        description: `关联查询`,
-        required: false,
-        type: Object,
-    })
-    @IsOptional()
-    @IsArray()
-    @Transform(({ value }) => {
-        if (value === undefined || value === null) {
-            return undefined;
-        }
-        return Array.isArray(value) ? value : [value];
-    })
-    @Type(() => String)
-    relations?: string[];
+  @ApiProperty({
+    description: `关联查询`,
+    required: false,
+    type: Object,
+  })
+  @IsOptional()
+  @IsArray()
+  @Transform(({ value }) => {
+    if (value === undefined || value === null) {
+      return undefined;
+    }
+    return Array.isArray(value)
+      ? value.filter((item) => typeof item === `string`)
+      : [value].filter((item) => typeof item === `string`);
+  })
+  @Type(() => String)
+  relations?: string[];
 }

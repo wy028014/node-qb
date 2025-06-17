@@ -14,8 +14,8 @@ import { User2menuService } from './user2menu.service';
 import { User2menu } from './user2menu.entity';
 
 @Module({
-    controllers: [User2menuController],
-    imports: [TypeOrmModule.forFeature([User2menu])],
-    providers: [CustomLogger, User2menuService]
+  controllers: [User2menuController],
+  imports: [TypeOrmModule.forFeature([User2menu])],
+  providers: [CustomLogger, User2menuService],
 })
-export class User2menuModule { }
+export class User2menuModule {}

@@ -6,20 +6,12 @@
  * @FilePath: /nodejs-qb/background/src/types/index.d.ts
  * @Description: 类型 增加 FastifyRequest 中的 user, MyRes
  */
-import 'fastify';
-declare module 'fastify' {
-    export interface FastifyRequest {
-        user?: {
-            id: string;
-        };
-    }
-}
+declare module 'express-static';
 
 export interface MyRes {
-    data?: any; // 响应数据
-    message: string; // 响应消息
-    statusCode: number; // 响应状态码
-    success: boolean; // 响应是否成功
-    timestamp?: string; // 响应时间戳
+  data?: any; // 响应数据
+  message: string; // 响应消息
+  statusCode: number; // 响应状态码
+  success: boolean; // 响应是否成功
+  timestamp?: string; // 响应时间戳
 }
-

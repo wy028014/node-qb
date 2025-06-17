@@ -6,7 +6,13 @@
  * @FilePath: /nodejs-qb/background/src/user2menu/user2menu.service.ts
  * @Description: 用户2菜单 服务层
  */
-import { Brackets, EntityManager, Repository, SelectQueryBuilder, UpdateResult } from 'typeorm';
+import {
+  Brackets,
+  EntityManager,
+  Repository,
+  SelectQueryBuilder,
+  UpdateResult,
+} from 'typeorm';
 import { CustomLogger } from '@/plugins';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,63 +26,73 @@ export class User2menuService {
     private readonly logger: CustomLogger,
     @InjectRepository(User2menu)
     private readonly user2menuRepository: Repository<User2menu>,
-  ) { }
+  ) {}
 
   // 批量创建用户2菜单
-  async create(createDto: User2menuCreateDto[]): Promise<{ success: User2menu[], fail: User2menuCreateDto[] }> {
+  async create(
+    createDto: User2menuCreateDto[],
+  ): Promise<{ success: User2menu[]; fail: User2menuCreateDto[] }> {
     if (createDto.length === 0) return { success: [], fail: [] };
-    const result: { success: User2menu[]; fail: User2menuCreateDto[]; } = { success: [], fail: [] };
+    const result: { success: User2menu[]; fail: User2menuCreateDto[] } = {
+      success: [],
+      fail: [],
+    };
     // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingRelations: User2menu[] = await this.user2menuRepository
       .createQueryBuilder(`user2menu`)
       .where(
-        new Brackets(qb => {
+        new Brackets((qb) => {
           createDto.forEach((dto, index) => {
             qb.orWhere(
               `(user2menu.userId = :userId${index} AND user2menu.menuId = :menuId${index})`,
               {
                 [`userId${index}`]: dto.userId,
                 [`menuId${index}`]: dto.menuId,
-              }
+              },
             );
           });
-        })
+        }),
       )
       .getMany();
     // 创建一个由userId和menuId组成的唯一键集合
     const existingKeys = existingRelations.map(
-      relation => `${relation.user.id}-${relation.user.id}`
+      (relation) => `${relation.user.id}-${relation.user.id}`,
     );
     // 2) 将已存在的关联存入fail数组
-    const existingDtos = createDto.filter(
-      dto => existingKeys.includes(`${dto.userId}-${dto.menuId}`)
+    const existingDtos = createDto.filter((dto) =>
+      existingKeys.includes(`${dto.userId}-${dto.menuId}`),
     );
     result.fail.push(...existingDtos);
 
     // 3) 将需要新建的关联存入validDtos数组
     const validDtos = createDto.filter(
-      dto => !existingKeys.includes(`${dto.userId}-${dto.menuId}`)
+      (dto) => !existingKeys.includes(`${dto.userId}-${dto.menuId}`),
     );
     // 4) 使用事务批量创建有效记录
-    await this.user2menuRepository.manager.transaction(async (entityManager: EntityManager) => {
-      for (const dto of validDtos) {
-        try {
-          const entity: User2menu = entityManager.create(User2menu, dto);
-          const savedEntity: User2menu = await entityManager.save(entity);
-          result.success.push(savedEntity);
-        } catch (error) {
-          // 处理单个记录保存失败的情况
-          this.logger.error(`保存用户失败: ${dto}`, error);
-          result.fail.push(dto);
+    await this.user2menuRepository.manager.transaction(
+      async (entityManager: EntityManager) => {
+        for (const dto of validDtos) {
+          try {
+            const entity: User2menu = entityManager.create(User2menu, dto);
+            const savedEntity: User2menu = await entityManager.save(entity);
+            result.success.push(savedEntity);
+          } catch (error) {
+            // 处理单个记录保存失败的情况
+            this.logger.error(`保存用户失败: ${dto}`, error);
+            result.fail.push(dto);
+          }
         }
-      }
-    });
+      },
+    );
     return result;
   }
 
   // 多条件查询用户2菜单
-  async find(queryDto: User2menuQueryDto): Promise<{ list: User2menu[]; total: number }> {
-    const qb: SelectQueryBuilder<User2menu> = this.user2menuRepository.createQueryBuilder(`user2menu`);
+  async find(
+    queryDto: User2menuQueryDto,
+  ): Promise<{ list: User2menu[]; total: number }> {
+    const qb: SelectQueryBuilder<User2menu> =
+      this.user2menuRepository.createQueryBuilder(`user2menu`);
     // 1) 软删除过滤
     qb.where(`user2menu.deletedAt IS NULL`);
     // 2) 普通等值过滤
@@ -111,7 +127,8 @@ export class User2menuService {
       qb.skip((page - 1) * size).take(size);
     }
     // 7) 执行
-    const [list, total]: [list: User2menu[], total: number] = await qb.getManyAndCount();
+    const [list, total]: [list: User2menu[], total: number] =
+      await qb.getManyAndCount();
     return { list, total };
   }
 

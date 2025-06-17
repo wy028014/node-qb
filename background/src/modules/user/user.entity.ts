@@ -8,45 +8,56 @@
  */
 import bcrypt from 'bcryptjs';
 import { baseEntity } from 'src/common/entities/base.entity';
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import { User2menu } from '@/modules/user2menu/user2menu.entity';
 
 @Entity()
 export class User extends baseEntity {
-    @PrimaryGeneratedColumn(`uuid`)
-    id: string;
+  @PrimaryGeneratedColumn(`uuid`)
+  id: string;
 
-    @Column({
-        length: 32,
-        name: `username`,
-        nullable: false,
-        unique: true,
-        type: `varchar`,
-    })
-    username: string;
+  @Column({
+    length: 32,
+    name: `username`,
+    nullable: false,
+    unique: true,
+    type: `varchar`,
+  })
+  username: string;
 
-    @Column({
-        length: 128,
-        name: `password`,
-        nullable: false,
-        unique: false,
-        type: `varchar`,
-    })
-    password: string;
+  @Column({
+    length: 128,
+    name: `password`,
+    nullable: false,
+    unique: false,
+    type: `varchar`,
+  })
+  password: string;
 
-    @OneToMany(() => User2menu, (user2menu) => user2menu.user)
-    user2menus: User2menu[];
+  @OneToMany(() => User2menu, (user2menu) => user2menu.user)
+  user2menus: User2menu[];
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    async hashPassword(password: string): Promise<void> {
-        if (this.password && !this.password.startsWith(`$2a$`) && !this.password.startsWith(`$2b$`)) {
-            const salt = await bcrypt.genSalt(10);
-            this.password = await bcrypt.hash(this.password, salt);
-        }
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword(password: string): Promise<void> {
+    if (
+      this.password &&
+      !this.password.startsWith(`$2a$`) &&
+      !this.password.startsWith(`$2b$`)
+    ) {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
     }
+  }
 
-    async validatePassword(password: string): Promise<boolean> {
-        return bcrypt.compareSync(password, this.password);
-    }
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compareSync(password, this.password);
+  }
 }

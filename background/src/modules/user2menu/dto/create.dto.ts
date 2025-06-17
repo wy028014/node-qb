@@ -11,27 +11,27 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class User2menuCreateDto {
-    @ApiProperty({
-        description: `用户ID`,
-        type: String
-    })
-    @IsString()
-    userId: string;
+  @ApiProperty({
+    description: `用户ID`,
+    type: String,
+  })
+  @IsString()
+  userId: string;
 
-    @ApiProperty({
-        description: `菜单ID`,
-        type: String
-    })
-    @IsString()
-    menuId: string;
+  @ApiProperty({
+    description: `菜单ID`,
+    type: String,
+  })
+  @IsString()
+  menuId: string;
 
-    @ApiProperty({
-        default: null,
-        description: `权限`,
-        example: null,
-        type: String,
-        required: false
-    })
-    @IsString()
-    permission: string | null;
+  @ApiProperty({
+    default: null,
+    description: `权限`,
+    example: null,
+    type: String,
+    required: false,
+  })
+  @IsString()
+  permission: string | null;
 }

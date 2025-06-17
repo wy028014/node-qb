@@ -11,24 +11,24 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Menu } from '@/modules/menu/menu.entity';
 import { User } from '@/modules/user/user.entity';
 
-@Entity("user2menu")
+@Entity('user2menu')
 export class User2menu extends baseEntity {
-    @PrimaryGeneratedColumn(`uuid`)
-    id: string;
+  @PrimaryGeneratedColumn(`uuid`)
+  id: string;
 
-    @ManyToOne(() => User, (user) => user.user2menus)
-    user: User;
+  @ManyToOne(() => User, (user) => user.user2menus)
+  user: User;
 
-    @ManyToOne(() => Menu, (menu) => menu.user2menus)
-    menu: Menu;
+  @ManyToOne(() => Menu, (menu) => menu.user2menus)
+  menu: Menu;
 
-    @Column({
-        default: null,
-        length: 128,
-        name: `permission`,
-        nullable: true,
-        type: `varchar`,
-        unique: false
-    })
-    permission: string | null;
+  @Column({
+    default: null,
+    length: 128,
+    name: `permission`,
+    nullable: true,
+    type: `varchar`,
+    unique: false,
+  })
+  permission: string | null;
 }

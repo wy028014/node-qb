@@ -10,19 +10,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class UserCreateDto {
-    @ApiProperty({
-        description: `用户的用户名, 用于唯一标识用户`,
-        example: `028014`,
-        type: String
-    })
-    @IsString()
-    username: string;
+  @ApiProperty({
+    description: `用户的用户名, 用于唯一标识用户`,
+    example: `028014`,
+    type: String,
+  })
+  @IsString()
+  username: string;
 
-    @ApiProperty({
-        description: `用户的登录密码`,
-        example: `Wy028014.`,
-        type: String
-    })
-    @IsString()
-    password: string;
+  @ApiProperty({
+    description: `用户的登录密码`,
+    example: `Wy028014.`,
+    type: String,
+  })
+  @IsString()
+  password: string;
 }
