@@ -8,22 +8,22 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 export class User2menuCreateDto {
   @ApiProperty({
     description: `用户ID`,
     type: String,
   })
-  @IsString()
-  userId: string;
+  @IsUUID()
+  userId: string = ``;
 
   @ApiProperty({
     description: `菜单ID`,
     type: String,
   })
-  @IsString()
-  menuId: string;
+  @IsUUID()
+  menuId: string = ``;
 
   @ApiProperty({
     default: null,
@@ -33,5 +33,5 @@ export class User2menuCreateDto {
     required: false,
   })
   @IsString()
-  permission: string | null;
+  permission: string | null = null;
 }

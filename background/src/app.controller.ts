@@ -7,10 +7,11 @@
  * @Description: app 控制层
  */
 import { Controller, Get, Redirect } from '@nestjs/common';
+import { ProjectConfig } from '../../project.config';
 
 @Controller()
 export class AppController {
   @Get()
-  @Redirect(`http://127.0.0.1:3000/api/`, 302)
+  @Redirect(`http://127.0.0.1:${ProjectConfig.port.background}/api/`, 302)
   index(): void {}
 }

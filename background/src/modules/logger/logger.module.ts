@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [LoggerController],
-  exports: [LoggerService],
+  exports: [TypeOrmModule],
   imports: [TypeOrmModule.forFeature([Logger])],
   providers: [CustomLogger, LoggerService],
 })

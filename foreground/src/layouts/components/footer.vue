@@ -1,9 +1,19 @@
+<!--
+ * @Author: 王野 18545455617@163.com
+ * @Date: 2025-08-11 07:42:50
+ * @LastEditors: 王野 18545455617@163.com
+ * @LastEditTime: 2025-08-11 08:45:03
+ * @FilePath: /node-qb/foreground/src/layouts/components/footer.vue
+ * @Description: 布局 底部
+-->
 <template>
-  <el-footer class="bg-#a6c9ed h-3 lh-2 text-center fs-1.2 p-0.5">版权所有 © {{ $dayjs().format(`YYYY`) }} 王野</el-footer>
+  <el-footer class="bg-#a6c9ed h-3 lh-2 text-center fs-1.2 p-0.5"
+    >版权所有 © {{ $dayjs().format(`YYYY`) }} 王野</el-footer
+  >
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, getCurrentInstance } from 'vue"
-const instance: ComponentInternalInstance | null = getCurrentInstance()
-const $dayjs = instance!.appContext.config.globalProperties.$dayjs
+import { ComponentInternalInstance, getCurrentInstance } from "vue";
+const instance: ComponentInternalInstance | null = getCurrentInstance();
+const $dayjs = instance!.appContext.config.globalProperties.$dayjs;
 </script>
 <style scoped></style>

@@ -1,6 +1,14 @@
-import { reactive } from 'vue';
-import { DepartmentApi } from '@/api/modules/';
-import { useInfoStore } from '@/store';
+/*
+ * @Author: 王野 18545455617@163.com
+ * @Date: 2025-08-11 07:42:50
+ * @LastEditors: 王野 18545455617@163.com
+ * @LastEditTime: 2025-08-11 08:43:53
+ * @FilePath: /node-qb/foreground/src/components/Department/data.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+import { reactive } from "vue";
+import { DepartmentApi } from "@/api/modules/";
+import { useInfoStore } from "@/store";
 
 const DepartmentData: {
   value: string;

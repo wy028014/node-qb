@@ -172,7 +172,7 @@ export class LoggerController {
     }),
   )
   async update(
-    @Param(`id`, ParseUUIDPipe) id: string,
+    @Param(`id`, ParseUUIDPipe) id: number,
     @Body() updateDto: LoggerUpdateDto,
   ): Promise<MyResDto> {
     const updated: Logger = await this.loggerService.update(id, updateDto);

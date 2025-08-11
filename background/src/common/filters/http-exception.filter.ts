@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 08:47:50
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 08:42:47
+ * @LastEditTime: 2025-08-11 08:03:47
  * @FilePath: /nodejs-qb/background/src/common/filters/http-exception.filter.ts
  * @Description: 异常 过滤器
  */
@@ -24,8 +24,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx: HttpArgumentsHost = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    const response: Response = ctx.getResponse();
+    const request: Request = ctx.getRequest();
 
     let status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string = `网络错误`;
@@ -45,7 +45,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       exception instanceof Error
         ? exception.stack
         : (exception as { stack?: string }).stack;
-    console.error(`request: `, request)
     this.logger.error(
       `错误码 ${status} : ${request.method} ${request.url}: ${message}`,
       stackTrace || `无可用调用栈信息`,

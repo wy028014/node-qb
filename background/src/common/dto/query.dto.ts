@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:02:30
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 08:43:46
+ * @LastEditTime: 2025-08-11 08:01:00
  * @FilePath: /nodejs-qb/background/src/common/dto/where.dto.ts
  * @Description: 查询 dto
  */
@@ -18,7 +18,7 @@ export class QueryDto {
   })
   @IsOptional()
   @IsObject()
-  equals?: Record<string, any>;
+  equals?: Record<string, unknown>;
 
   @ApiProperty({
     description: `匹配字段查询`,

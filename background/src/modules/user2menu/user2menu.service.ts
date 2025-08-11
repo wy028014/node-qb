@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:46:47
+ * @LastEditTime: 2025-08-11 08:21:36
  * @FilePath: /nodejs-qb/background/src/user2menu/user2menu.service.ts
  * @Description: 用户2菜单 服务层
  */
@@ -37,9 +37,10 @@ export class User2menuService {
       success: [],
       fail: [],
     };
-    // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingRelations: User2menu[] = await this.user2menuRepository
       .createQueryBuilder(`user2menu`)
+      .leftJoinAndSelect('user2menu.user', 'user')
+      .leftJoinAndSelect('user2menu.menu', 'menu')
       .where(
         new Brackets((qb) => {
           createDto.forEach((dto, index) => {
@@ -54,36 +55,36 @@ export class User2menuService {
         }),
       )
       .getMany();
-    // 创建一个由userId和menuId组成的唯一键集合
     const existingKeys = existingRelations.map(
-      (relation) => `${relation.user.id}-${relation.user.id}`,
+      (relation) => `${relation.user?.id ?? ''}-${relation.menu?.id ?? ''}`,
     );
-    // 2) 将已存在的关联存入fail数组
     const existingDtos = createDto.filter((dto) =>
       existingKeys.includes(`${dto.userId}-${dto.menuId}`),
     );
     result.fail.push(...existingDtos);
-
-    // 3) 将需要新建的关联存入validDtos数组
     const validDtos = createDto.filter(
       (dto) => !existingKeys.includes(`${dto.userId}-${dto.menuId}`),
     );
-    // 4) 使用事务批量创建有效记录
-    await this.user2menuRepository.manager.transaction(
-      async (entityManager: EntityManager) => {
-        for (const dto of validDtos) {
-          try {
-            const entity: User2menu = entityManager.create(User2menu, dto);
-            const savedEntity: User2menu = await entityManager.save(entity);
-            result.success.push(savedEntity);
-          } catch (error) {
-            // 处理单个记录保存失败的情况
-            this.logger.error(`保存用户失败: ${dto}`, error);
-            result.fail.push(dto);
-          }
-        }
-      },
-    );
+    try {
+      await this.user2menuRepository.manager.transaction(
+        async (entityManager: EntityManager) => {
+          const entities: User2menu[] = validDtos.map((dto) =>
+            entityManager.create(User2menu, {
+              user: { id: dto.userId },
+              menu: { id: dto.menuId },
+              permission: dto.permission,
+            }),
+          );
+          const savedEntities: User2menu[] = await entityManager.save(entities);
+          result.success.push(...savedEntities);
+        },
+      );
+    } catch (error) {
+      result.fail.push(...validDtos);
+      this.logger.error(
+        `事务提交失败: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
     return result;
   }
 
@@ -96,12 +97,12 @@ export class User2menuService {
     // 1) 软删除过滤
     qb.where(`user2menu.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals: Record<string, any> = queryDto.equals ?? {};
+    const equals: Record<string, unknown> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`user2menu.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like: Record<string, any> = queryDto.like ?? {};
+    const like: Record<string, string> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`user2menu.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,

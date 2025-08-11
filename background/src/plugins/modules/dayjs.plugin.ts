@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 13:42:48
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 08:02:54
+ * @LastEditTime: 2025-08-11 08:10:39
  * @FilePath: /nodejs-qb/background/src/plugins/modules/dayjs.plugin.ts
  * @Description: 插件 日期时间
  */
@@ -48,4 +48,12 @@ export function func_getAgeFromIdCard(idCardNumber: string): number {
   const age: number = today.diff(birthDate, `years`);
 
   return parseInt(age.toString(), 10);
+}
+
+/**
+ * 获取当前时间
+ * @returns 格式化字符串
+ */
+export function now(): string {
+  return dayjs().format(`YYYY-MM-DD HH:mm:ss`);
 }

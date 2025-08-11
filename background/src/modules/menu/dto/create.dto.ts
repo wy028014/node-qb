@@ -7,17 +7,18 @@
  * @Description: 菜单 新增dto
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNumber, Min, Max } from 'class-validator';
 
 export class MenuCreateDto {
   @ApiProperty({
     description: `菜单的图标`,
     example: `tool`,
     type: String,
+    required: false,
   })
   @IsOptional()
   @IsString()
-  icon?: string;
+  icon?: string | null;
 
   @ApiProperty({
     description: `菜单的名称, 用于唯一标识菜单`,
@@ -25,11 +26,25 @@ export class MenuCreateDto {
     type: String,
   })
   @IsString()
-  name: string;
+  name: string = ``;
+
+  @ApiProperty({
+    description: `排序字段，值越小越靠前，范围: 0001 ~ 9999`,
+    example: 1,
+    minimum: 1,
+    maximum: 9999,
+    type: Number,
+  })
+  @IsNumber()
+  @Max(9999)
+  @Min(1)
+  order: number = 1;
 
   @ApiProperty({
     default: null,
-    description: `菜单的父id`,
+    description: `菜单的父id(顶层菜单为 null)`,
+    example: null,
+    required: false,
     type: String,
   })
   @IsOptional()
@@ -42,7 +57,7 @@ export class MenuCreateDto {
     type: String,
   })
   @IsString()
-  path: string;
+  path: string = ``;
 
   @ApiProperty({
     description: `菜单的标题`,
@@ -50,5 +65,5 @@ export class MenuCreateDto {
     type: String,
   })
   @IsString()
-  title: string;
+  title: string = ``;
 }

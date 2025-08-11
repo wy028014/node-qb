@@ -7,7 +7,8 @@
  * @Description: 用户 新增dto
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
+import { v4 as uuidv4 } from 'uuid';
 
 export class UserCreateDto {
   @ApiProperty({
@@ -15,8 +16,8 @@ export class UserCreateDto {
     example: `028014`,
     type: String,
   })
-  @IsString()
-  username: string;
+  @IsUUID()
+  username: string = uuidv4();
 
   @ApiProperty({
     description: `用户的登录密码`,
@@ -24,5 +25,5 @@ export class UserCreateDto {
     type: String,
   })
   @IsString()
-  password: string;
+  password: string = ``;
 }

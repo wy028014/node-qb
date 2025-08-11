@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:04:52
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:36:14
+ * @LastEditTime: 2025-08-11 08:21:43
  * @FilePath: /nodejs-qb/background/src/user/user.service.ts
  * @Description: 用户 服务层
  */
@@ -37,7 +37,6 @@ export class UserService {
       success: [],
       fail: [],
     };
-    // 1) 批量获取已存在的名称(减少数据库查询次数)
     const existingNames: string[] = await this.userRepository
       .createQueryBuilder(`user`)
       .select(`user.username`)
@@ -46,16 +45,13 @@ export class UserService {
       })
       .getMany()
       .then((users: User[]) => users.map((user: User) => user.username));
-    // 2) 将不需要新建的菜单存入 fail 数组
     const existingDtos: UserCreateDto[] = createDto.filter(
       (dto: UserCreateDto) => existingNames.includes(dto.username),
     );
     result.fail.push(...existingDtos);
-    // 3) 将需要新建的菜单存入 validDtos 数组
     const validDtos: UserCreateDto[] = createDto.filter(
       (dto: UserCreateDto) => !existingNames.includes(dto.username),
     );
-    // 4) 使用事务批量创建有效记录
     await this.userRepository.manager.transaction(
       async (entityManager: EntityManager) => {
         for (const dto of validDtos) {
@@ -63,9 +59,8 @@ export class UserService {
             const entity: User = entityManager.create(User, dto);
             const savedEntity: User = await entityManager.save(entity);
             result.success.push(savedEntity);
-          } catch (error) {
-            // 处理单个记录保存失败的情况
-            this.logger.error(`保存用户失败: ${dto}`, error);
+          } catch (error: unknown) {
+            this.logger.error(`保存用户失败: ${dto.username}`, error as string);
             result.fail.push(dto);
           }
         }
@@ -81,12 +76,12 @@ export class UserService {
     // 1) 软删除过滤
     qb.where(`user.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals: Record<string, any> = queryDto.equals ?? {};
+    const equals: Record<string, unknown> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`user.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like: Record<string, any> = queryDto.like ?? {};
+    const like: Record<string, string> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`user.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,

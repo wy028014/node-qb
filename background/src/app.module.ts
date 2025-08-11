@@ -12,7 +12,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { LoggerModule } from './modules/logger/logger.module';
 import { LoggerService } from './modules/logger/logger.service';
-import { LogInterceptor } from './common/interceptors/log.interceptor';
+import { LoggerInterceptor } from './common/interceptors/log.interceptor';
 import { MenuModule } from './modules/menu/menu.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -33,7 +33,7 @@ import { User2menuModule } from './modules/user2menu/user2menu.module';
     LoggerService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: LogInterceptor,
+      useClass: LoggerInterceptor,
     },
   ],
 })

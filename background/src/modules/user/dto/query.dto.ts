@@ -24,28 +24,28 @@ export class UserQueryDto extends QueryDto {
   order?: FindOptionsOrder<User>;
 
   @ApiProperty({
+    default: 1,
     description: `页码(从 1 开始)`,
+    example: 1,
     required: false,
     type: Number,
-    default: 1,
-    example: 1,
   })
-  @IsOptional()
-  @Type(() => Number)
   @IsInt()
+  @IsOptional()
   @Min(1)
-  page?: number;
+  @Type(() => Number)
+  page?: number = 1;
 
   @ApiProperty({
+    default: 10,
     description: `每页数量`,
+    example: 10,
     required: false,
     type: Number,
-    default: 10,
-    example: 10,
   })
-  @IsOptional()
-  @Type(() => Number)
   @IsInt()
+  @IsOptional()
   @Min(1)
-  size?: number;
+  @Type(() => Number)
+  size?: number = 10;
 }

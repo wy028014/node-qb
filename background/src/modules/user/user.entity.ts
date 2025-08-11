@@ -17,11 +17,12 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { User2menu } from '@/modules/user2menu/user2menu.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class User extends baseEntity {
   @PrimaryGeneratedColumn(`uuid`)
-  id: string;
+  id: string = uuidv4();
 
   @Column({
     length: 32,
@@ -30,7 +31,7 @@ export class User extends baseEntity {
     unique: true,
     type: `varchar`,
   })
-  username: string;
+  username: string = ``;
 
   @Column({
     length: 128,
@@ -39,14 +40,16 @@ export class User extends baseEntity {
     unique: false,
     type: `varchar`,
   })
-  password: string;
+  password: string = ``;
 
-  @OneToMany(() => User2menu, (user2menu) => user2menu.user)
+  @OneToMany(() => User2menu, (user2menu) => user2menu.user, {
+    cascade: true,
+  })
   user2menus: User2menu[];
 
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword(password: string): Promise<void> {
+  async hashPassword(): Promise<void> {
     if (
       this.password &&
       !this.password.startsWith(`$2a$`) &&
@@ -57,7 +60,7 @@ export class User extends baseEntity {
     }
   }
 
-  async validatePassword(password: string): Promise<boolean> {
+  validatePassword(password: string): boolean {
     return bcrypt.compareSync(password, this.password);
   }
 }

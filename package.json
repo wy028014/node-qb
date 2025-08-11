@@ -1,17 +1,18 @@
 {
-	"private": true,
-	"license": "UNLICENSED",
-	"workspaces": [
-		"background",
-		"foreground"
-	],
-	"scripts": {
-		"b": "yarn workspace background start:dev",
-		"f": "yarn workspace foreground dev",
-		"dev": "concurrently \"yarn workspace foreground dev\" \"yarn workspace background start:dev\"",
-		"up": "yarn upgrade && yarn workspaces run upgrade"
-	},
-	"devDependencies": {
-		"concurrently": "^9.1.2"
-	}
+  "name": "node-qb",
+  "license": "UNLICENSED",
+  "private": true,
+  "workspaces": [
+    "background",
+    "foreground"
+  ],
+  "scripts": {
+    "b": "yarn workspace background start:dev",
+    "f": "yarn workspace foreground dev",
+    "dev": "concurrently \"yarn workspace foreground dev\" \"yarn workspace background start:dev\"",
+    "up": "yarn upgrade && yarn workspaces run upgrade"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }

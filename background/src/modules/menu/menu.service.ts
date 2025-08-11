@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:29:21
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:32:58
+ * @LastEditTime: 2025-08-11 08:07:20
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.service.ts
  * @Description: 菜单 服务层
  */
@@ -65,7 +65,7 @@ export class MenuService {
             result.success.push(savedEntity);
           } catch (error) {
             // 处理单个记录保存失败的情况
-            this.logger.error(`保存操作记录失败: ${dto}`, error);
+            this.logger.error(`保存操作记录失败: ${dto.name}`, error as string);
             result.fail.push(dto);
           }
         }
@@ -81,12 +81,12 @@ export class MenuService {
     // 1) 软删除过滤
     qb.where(`menu.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals: Record<string, any> = queryDto.equals ?? {};
+    const equals: Record<string, unknown> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`menu.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like: Record<string, any> = queryDto.like ?? {};
+    const like: Record<string, string> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`menu.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,

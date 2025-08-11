@@ -2,7 +2,7 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-10 14:01:32
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:18:09
+ * @LastEditTime: 2025-08-11 08:06:39
  * @FilePath: /nodejs-qb/background/src/modules/logger/logger.service.ts
  * @Description: 操作记录 服务层
  */
@@ -44,7 +44,11 @@ export class LoggerService {
             const entity = entityManager.create(Logger, dto);
             const savedEntity = await entityManager.save(entity);
             result.success.push(savedEntity);
-          } catch (error) {
+          } catch (error: unknown) {
+            this.logger.error(
+              `保存操作记录失败: ${dto.route}`,
+              error as string,
+            );
             result.fail.push(dto);
           }
         }
@@ -62,12 +66,12 @@ export class LoggerService {
     // 1) 软删除过滤
     qb.where(`logger.deletedAt IS NULL`);
     // 2) 普通等值过滤
-    const equals: Record<string, any> = queryDto.equals ?? {};
+    const equals: Record<string, unknown> = queryDto.equals ?? {};
     for (const [field, value] of Object.entries(equals)) {
       qb.andWhere(`logger.${field} = :${field}`, { [field]: value });
     }
     // 3) 模糊过滤
-    const like: Record<string, any> = queryDto.like ?? {};
+    const like: Record<string, string> = queryDto.like ?? {};
     for (const [field, pattern] of Object.entries(like)) {
       qb.andWhere(`logger.${field} LIKE :${field}_like`, {
         [`${field}_like`]: `%${pattern}%`,
@@ -98,7 +102,7 @@ export class LoggerService {
   }
 
   // 更新操作记录信息
-  async update(id: string, updateDto: LoggerUpdateDto): Promise<Logger> {
+  async update(id: number, updateDto: LoggerUpdateDto): Promise<Logger> {
     const logger: Logger | undefined = await this.loggerRepository.preload({
       id,
       ...updateDto,

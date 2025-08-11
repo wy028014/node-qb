@@ -2,18 +2,13 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 11:08:12
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:29:10
+ * @LastEditTime: 2025-08-11 08:06:04
  * @FilePath: /nodejs-qb/background/src/config/index.ts
  * @Description: 配置
  */
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { JwtModuleOptions } from '@nestjs/jwt';
-interface ProjectConfig {
-  host: string;
-  port: number;
-  name: string;
-  version: string;
-}
+
 interface SessionConfig {
   cookie: {
     path: string;
@@ -48,14 +43,6 @@ const jwtConfig: JwtModuleOptions = {
   },
 };
 
-// 项目配置
-const projectConfig: ProjectConfig = {
-  host: `0.0.0.0`,
-  port: 3000,
-  name: `后台项目`,
-  version: `1.0.0`,
-};
-
 // 会话配置
 const sessionConfig: SessionConfig = {
   cookie: {
@@ -73,12 +60,10 @@ const sessionConfig: SessionConfig = {
 const config: {
   database: TypeOrmModuleOptions;
   jwt: JwtModuleOptions;
-  project: ProjectConfig;
   session: SessionConfig;
 } = {
   database: databaseConfig,
   jwt: jwtConfig,
-  project: projectConfig,
   session: sessionConfig,
 };
 

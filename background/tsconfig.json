@@ -1,5 +1,4 @@
 {
-  // "$schema": "./tsconfig.schema.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
@@ -14,22 +13,15 @@
     "noImplicitAny": false,
     "outDir": "./dist",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "typeRoots": [
-        "node_modules/@types"
-      ],
-      "types": [
-        "node",
-        "express"
-      ]
+      "@/*": ["src/*"],
+      "typeRoots": ["node_modules/@types"],
+      "types": ["node", "express"]
     },
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictBindCallApply": false,
     "strictNullChecks": true,
-    "target": "ES2023",
+    "target": "ES2023"
   }
 }

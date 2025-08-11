@@ -10,11 +10,12 @@ import { baseEntity } from '@/common/entities/base.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Menu } from '@/modules/menu/menu.entity';
 import { User } from '@/modules/user/user.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity('user2menu')
 export class User2menu extends baseEntity {
   @PrimaryGeneratedColumn(`uuid`)
-  id: string;
+  id: string = uuidv4();
 
   @ManyToOne(() => User, (user) => user.user2menus)
   user: User;
@@ -30,5 +31,5 @@ export class User2menu extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  permission: string | null;
+  permission: string | null = null;
 }

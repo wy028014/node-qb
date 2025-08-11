@@ -34,7 +34,7 @@ export class User2menuQueryDto extends QueryDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  page?: number;
+  page?: number = 1;
 
   @ApiProperty({
     description: '每页数量',
@@ -47,5 +47,5 @@ export class User2menuQueryDto extends QueryDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  size?: number;
+  size?: number = 10;
 }
