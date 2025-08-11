@@ -6,13 +6,13 @@
  * @FilePath: /nodejs-qb/background/src/modules/logger/logger.entity.ts
  * @Description: 操作记录 实体
  */
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { baseEntity } from '@/common/entities/base.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { baseEntity } from '@/common/entities/base.entity'
 
 @Entity({ name: `logger` })
 export class Logger extends baseEntity {
   @PrimaryGeneratedColumn()
-  id: number = 0;
+  id: number = 0
 
   @Column({
     default: null,
@@ -22,7 +22,7 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  userId: string | null = null;
+  userId: string | null = null
 
   @Column({
     default: null,
@@ -32,7 +32,7 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  route: string = ``;
+  route: string = ``
 
   @Column({
     default: null,
@@ -42,7 +42,7 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  accessMethod: string = `GET`;
+  accessMethod: string = `GET`
 
   @Column({
     default: null,
@@ -51,7 +51,7 @@ export class Logger extends baseEntity {
     type: `json`,
     unique: false,
   })
-  accessParams: Record<string, unknown> | null = null;
+  accessParams: Record<string, unknown> | null = null
 
   @Column({
     default: null,
@@ -60,7 +60,7 @@ export class Logger extends baseEntity {
     type: `json`,
     unique: false,
   })
-  responseData: Record<string, unknown> | null = null;
+  responseData: Record<string, unknown> | null = null
 
   @Column({
     default: null,
@@ -70,7 +70,7 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  error: string | null = null;
+  error: string | null = null
 
   @Column({
     default: null,
@@ -80,7 +80,7 @@ export class Logger extends baseEntity {
     type: `timestamp`,
     unique: false,
   })
-  accessTime: Date = new Date();
+  accessTime: Date = new Date()
 
   @Column({
     default: null,
@@ -90,7 +90,7 @@ export class Logger extends baseEntity {
     type: `timestamp`,
     unique: false,
   })
-  responseTime: Date | null = null;
+  responseTime: Date | null = null
 
   @Column({
     default: true,
@@ -99,7 +99,7 @@ export class Logger extends baseEntity {
     type: `boolean`,
     unique: false,
   })
-  isSuccess: boolean = true;
+  isSuccess: boolean = true
 
   @Column({
     default: null,
@@ -109,7 +109,7 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  userAgent: string | null = null;
+  userAgent: string | null = null
 
   @Column({
     default: null,
@@ -119,5 +119,5 @@ export class Logger extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  ip: string | null = null;
+  ip: string | null = null
 }

@@ -6,12 +6,7 @@
  * @FilePath: /nodejs-qb/background/src/common/entities/base.entity.ts
  * @Description: 基础 实体类
  */
-import {
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  BaseEntity,
-} from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn, BaseEntity } from 'typeorm'
 
 export abstract class baseEntity extends BaseEntity {
   @CreateDateColumn({
@@ -19,19 +14,19 @@ export abstract class baseEntity extends BaseEntity {
     default: () => `CURRENT_TIMESTAMP(6)`,
     comment: `创建时间`,
   })
-  createdAt: Date = new Date();
+  createdAt: Date = new Date()
 
   @UpdateDateColumn({
     type: `timestamp`,
     default: () => `CURRENT_TIMESTAMP(6)`,
     comment: `更新时间`,
   })
-  updatedAt: Date = new Date();
+  updatedAt: Date = new Date()
 
   @DeleteDateColumn({
     type: `timestamp`,
     default: () => `CURRENT_TIMESTAMP(6)`,
     comment: `删除时间`,
   })
-  deletedAt: Date | null = null;
+  deletedAt: Date | null = null
 }

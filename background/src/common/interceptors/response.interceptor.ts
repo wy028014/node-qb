@@ -2,37 +2,31 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 08:49:32
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 08:44:37
+ * @LastEditTime: 2025-08-11 10:52:32
  * @FilePath: /nodejs-qb/background/src/common/interceptors/response.interceptor.ts
  * @Description: 响应 拦截器
  */
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
-import { formatDate } from '@/plugins';
-import { map } from 'rxjs/operators';
-import { MyRes } from '@/types';
-import { Observable } from 'rxjs';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
+import { formatDate } from '@/plugins'
+import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs'
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((res: MyRes) => {
-        const timestamp: string = formatDate(new Date());
-        const data: unknown = formatDatesInObject(res.data);
+        const timestamp: string = formatDate(new Date())
+        const data: unknown = formatDatesInObject(res.data)
         return {
           statusCode: res.statusCode ?? 200,
           success: res.success ?? true,
           message: res.message ?? `OK`,
           data,
           timestamp,
-        };
+        }
       }),
-    );
+    )
   }
 }
 /**
@@ -41,27 +35,24 @@ export class ResponseInterceptor implements NestInterceptor {
 function formatDatesInObject(obj: unknown): unknown {
   // 1) Date 实例: 最优先
   if (obj instanceof Date) {
-    return formatDate(obj);
+    return formatDate(obj)
   }
   // 2) 符合 ISO8601 的字符串
-  if (
-    typeof obj === `string` &&
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/.test(obj)
-  ) {
-    return formatDate(new Date(obj));
+  if (typeof obj === `string` && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/.test(obj)) {
+    return formatDate(new Date(obj))
   }
   // 3) 数组: 递归 map
   if (Array.isArray(obj)) {
-    return obj.map((item: unknown) => formatDatesInObject(item));
+    return obj.map((item: unknown) => formatDatesInObject(item))
   }
   // 4) 纯对象: 递归其属性
   if (obj && typeof obj === `object`) {
-    const result: { [key: string]: unknown } = {};
+    const result: { [key: string]: unknown } = {}
     for (const [key, val] of Object.entries(obj)) {
-      result[key] = formatDatesInObject(val);
+      result[key] = formatDatesInObject(val)
     }
-    return result;
+    return result
   }
   // 5) 其他原始类型: 原样返回
-  return obj;
+  return obj
 }

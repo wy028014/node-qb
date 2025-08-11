@@ -7,9 +7,7 @@
  * @Description: 布局 头部
 -->
 <template>
-  <el-text
-    class="bg-#a6c9ed d-flex align-items-center w-100% fs-1.5 h-16"
-    type="primary"
+  <el-text class="bg-#a6c9ed d-flex align-items-center w-100% fs-1.5 h-16" type="primary"
     >平台</el-text
   >
 </template>

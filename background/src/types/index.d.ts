@@ -1,25 +1,31 @@
 /*
  * @Author: 王野 18545455617@163.com
- * @Date: 2025-04-18 15:44:05
+ * @Date: 2025-08-11 14:17:35
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-08-11 08:11:47
- * @FilePath: /nodejs-qb/background/src/types/index.d.ts
- * @Description: 类型 增加 FastifyRequest 中的 user, MyRes
+ * @LastEditTime: 2025-08-11 16:25:12
+ * @FilePath: /node-qb/background/src/types/index.d.ts
+ * @Description: 全局类型定义
  */
-import { User } from '@/modules/user/user.entity';
-
-declare module 'express-static';
-
-declare module 'express' {
-  interface Request {
-    user?: User;
+interface ProjectConfig {
+  host: string
+  port: {
+    foreground: number
+    background: number
+  }
+  name: {
+    foreground: string
+    background: string
+  }
+  version: {
+    foreground: string
+    background: string
   }
 }
 
-export interface MyRes {
-  data?: unknown; // 响应数据
-  message: string; // 响应消息
-  statusCode: number; // 响应状态码
-  success: boolean; // 响应是否成功
-  timestamp?: string; // 响应时间戳
+interface MyRes {
+  data?: unknown
+  message: string
+  statusCode: number
+  success: boolean
+  timestamp?: string
 }

@@ -1,52 +1,21 @@
 <template>
   <el-button-group>
-    <el-button
-      v-if="permission!.add"
-      color="#2177B8"
-      round
-      plain
-      @click="handleClick(`add`)"
+    <el-button v-if="permission!.add" color="#2177B8" round plain @click="handleClick(`add`)"
       >新增<i :class="`ri-add-line`"
     /></el-button>
-    <el-button
-      v-if="permission!.edit"
-      color="#909399"
-      round
-      plain
-      @click="handleClick(`edit`)"
+    <el-button v-if="permission!.edit" color="#909399" round plain @click="handleClick(`edit`)"
       >修改<i :class="`ri-edit-line`"
     /></el-button>
-    <el-button
-      v-if="permission!.delete"
-      color="#f07c82"
-      round
-      plain
-      @click="handleClick(`delete`)"
+    <el-button v-if="permission!.delete" color="#f07c82" round plain @click="handleClick(`delete`)"
       >删除<i :class="`ri-delete-bin-line`"
     /></el-button>
-    <el-button
-      v-if="permission!.import"
-      color="#61649f"
-      round
-      plain
-      @click="handleClick(`import`)"
-    >
+    <el-button v-if="permission!.import" color="#61649f" round plain @click="handleClick(`import`)">
       导入 <i :class="`ri-upload-line`"
     /></el-button>
-    <el-button
-      v-if="permission!.export"
-      color="#1ba784"
-      round
-      plain
-      @click="handleClick(`export`)"
+    <el-button v-if="permission!.export" color="#1ba784" round plain @click="handleClick(`export`)"
       >导出<i :class="`ri-download-line`"
     /></el-button>
-    <el-dropdown
-      placement="bottom-start"
-      trigger="click"
-      :show-timeout="0"
-      :hide-timeout="0"
-    >
+    <el-dropdown placement="bottom-start" trigger="click" :show-timeout="0" :hide-timeout="0">
       <el-button color="#5c2223" round plain split-button
         >筛选<i :class="`ri-filter-line`"
       /></el-button>
@@ -55,10 +24,7 @@
           <el-dropdown-item v-for="col in columns" :key="col.prop">
             <el-checkbox
               v-model="col.isShow"
-              @change="
-                (value: boolean) =>
-                  handleColumnVisibilityChange(col.prop || ``, value)
-              "
+              @change="(value: boolean) => handleColumnVisibilityChange(col.prop || ``, value)"
             >
               {{ col.label || `选择` }}
             </el-checkbox>
@@ -84,20 +50,20 @@ const props = defineProps({
     type: Array<ElementPlusNamespace.TableNamespace[`Column`]>,
     default: [],
   },
-});
+})
 const emit = defineEmits<{
-  (e: `click`, type: string): void;
-  (e: `column-visibility-change`, prop: string, visible: boolean): void;
-}>();
+  (e: `click`, type: string): void
+  (e: `column-visibility-change`, prop: string, visible: boolean): void
+}>()
 const handleClick = (type: string) => {
-  emit(`click`, type);
-};
+  emit(`click`, type)
+}
 const handleColumnVisibilityChange = (prop: string, visible: boolean) => {
-  emit(`column-visibility-change`, prop, visible);
-};
+  emit(`column-visibility-change`, prop, visible)
+}
 </script>
 <style scoped>
-i[class^="ri-"] {
+i[class^='ri-'] {
   padding-left: 0.8em;
   scale: 1.2;
 }

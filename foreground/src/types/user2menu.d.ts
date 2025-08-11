@@ -7,41 +7,41 @@
  * @Description: 用户2菜单 接口
  */
 interface User2menu {
-  id: string;
-  userId: string;
-  menuId: string;
-  permission: string;
-  user?: string;
-  menu?: string;
+  id: string
+  userId: string
+  menuId: string
+  permission: string
+  user?: string
+  menu?: string
 }
 
 interface ResUser2menu extends User2menu, Timestamps {}
 
 interface User2menuCreateDto {
-  userId: string;
-  menuId: string;
-  permission: string;
+  userId: string
+  menuId: string
+  permission: string
 }
 
 interface User2menuQueryDto {
   equals?: {
-    userId?: string;
-    menuId?: string;
-    permission?: string;
-  };
+    userId?: string
+    menuId?: string
+    permission?: string
+  }
   like?: {
-    userId?: string;
-    menuId?: string;
-    permission?: string;
-  };
-  relations?: string[];
-  order?: Record<string, `ASC` | `DESC`>;
-  page?: number;
-  size?: number;
+    userId?: string
+    menuId?: string
+    permission?: string
+  }
+  relations?: string[]
+  order?: Record<string, `ASC` | `DESC`>
+  page?: number
+  size?: number
 }
 
 interface User2menuUpdateDto {
-  userId?: string;
-  menuId?: string;
-  permission?: string;
+  userId?: string
+  menuId?: string
+  permission?: string
 }

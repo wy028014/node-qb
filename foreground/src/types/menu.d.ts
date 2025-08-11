@@ -8,61 +8,61 @@
  */
 
 interface ViewMenu {
-  id: string;
-  icon: string;
-  name: string;
-  order: number;
-  path: string;
-  title: string;
-  isEnabled: boolean;
-  level: number;
+  id: string
+  icon: string
+  name: string
+  order: number
+  path: string
+  title: string
+  isEnabled: boolean
+  level: number
 }
 
 interface ResMenu extends ViewMenu, Timestamps {
-  parentId?: string;
-  children?: ResMenu[];
-  parent?: ResMenu;
-  user2menus?: User2menu[];
+  parentId?: string
+  children?: ResMenu[]
+  parent?: ResMenu
+  user2menus?: User2menu[]
 }
 
 interface MenuCreateDto {
-  name: string;
-  order: number;
-  path: string;
-  title: string;
-  isEnabled: boolean;
-  level: number;
+  name: string
+  order: number
+  path: string
+  title: string
+  isEnabled: boolean
+  level: number
 }
 
 interface MenuQueryDto {
   equals?: {
-    name?: string;
-    order?: number;
-    path?: string;
-    title?: string;
-    isEnabled?: boolean;
-    level?: number;
-  };
+    name?: string
+    order?: number
+    path?: string
+    title?: string
+    isEnabled?: boolean
+    level?: number
+  }
   like?: {
-    name?: string;
-    order?: number;
-    path?: string;
-    title?: string;
-    isEnabled?: boolean;
-    level?: number;
-  };
-  relations?: string[];
-  order?: Record<string, `ASC` | `DESC`>;
-  page?: number;
-  size?: number;
+    name?: string
+    order?: number
+    path?: string
+    title?: string
+    isEnabled?: boolean
+    level?: number
+  }
+  relations?: string[]
+  order?: Record<string, `ASC` | `DESC`>
+  page?: number
+  size?: number
 }
 
 interface MenuUpdateDto {
-  name?: string;
-  order?: number;
-  path?: string;
-  title?: string;
-  isEnabled?: boolean;
-  level?: number;
-  parentId?: string;
+  name?: string
+  order?: number
+  path?: string
+  title?: string
+  isEnabled?: boolean
+  level?: number
+  parentId?: string
 }

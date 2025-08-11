@@ -2,17 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:38:22
+ * @LastEditTime: 2025-08-11 15:51:02
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.controller.ts
  * @Description: 菜单 控制层
  */
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
   Controller,
   Get,
@@ -28,16 +22,16 @@ import {
   Patch,
   Delete,
   UseInterceptors,
-} from '@nestjs/common';
-import { CustomLogger } from '@/plugins';
-import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
-import { Menu } from './menu.entity';
-import { MenuCreateDto } from './dto/create.dto';
-import { MenuUpdateDto } from './dto/update.dto';
-import { MenuService } from './menu.service';
-import { MenuQueryDto } from './dto/query.dto';
-import { MyResDto } from '@/common/dto/response.dto';
-import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
+} from '@nestjs/common'
+import { CustomLogger } from '@/plugins'
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
+import { Menu } from './entities/menu.entity'
+import { MenuCreateDto } from './dto/create.dto'
+import { MenuUpdateDto } from './dto/update.dto'
+import { MenuService } from './menu.service'
+import { MenuQueryDto } from './dto/query.dto'
+import { MyResDto } from '@/common/dto/response.dto'
+import { ResponseInterceptor } from '@/common/interceptors/response.interceptor'
 
 @ApiTags(`菜单`)
 @Controller(`menu`)
@@ -66,16 +60,14 @@ export class MenuController {
   )
   async create(@Body() createDto: MenuCreateDto[]): Promise<MyResDto> {
     const { success, fail }: { success: Menu[]; fail: MenuCreateDto[] } =
-      await this.menuService.create(createDto);
-    this.logger.log(
-      `创建菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`,
-    );
+      await this.menuService.create(createDto)
+    this.logger.log(`创建菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`)
     return {
       data: { success, fail },
       message: `创建菜单成功`,
       statusCode: HttpStatus.CREATED,
       success: true,
-    };
+    }
   }
 
   @Get()
@@ -150,14 +142,13 @@ export class MenuController {
     }),
   )
   async find(@Query() query: MenuQueryDto): Promise<MyResDto> {
-    const { list, total }: { list: Menu[]; total: number } =
-      await this.menuService.find(query);
+    const { list, total }: { list: Menu[]; total: number } = await this.menuService.find(query)
     return {
       data: { list, total },
       message: `查询菜单成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Patch(`:id`)
@@ -179,14 +170,14 @@ export class MenuController {
     @Param(`id`, ParseUUIDPipe) id: string,
     @Body() updateDto: MenuUpdateDto,
   ): Promise<MyResDto> {
-    const updated: Menu = await this.menuService.update(id, updateDto);
-    this.logger.log(`更新菜单成功, ID: ${id}`);
+    const updated: Menu = await this.menuService.update(id, updateDto)
+    this.logger.log(`更新菜单成功, ID: ${id}`)
     return {
       data: [updated],
       message: `菜单更新成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Delete(`:id`)
@@ -205,13 +196,13 @@ export class MenuController {
     }),
   )
   async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-    await this.menuService.remove(id);
-    this.logger.log(`软删除菜单成功, ID: ${id}`);
+    await this.menuService.remove(id)
+    this.logger.log(`软删除菜单成功, ID: ${id}`)
     return {
       data: null,
       message: `菜单删除成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 }

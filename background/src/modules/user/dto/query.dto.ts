@@ -2,16 +2,16 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-04-18 12:01:43
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 08:47:40
+ * @LastEditTime: 2025-08-11 14:47:10
  * @FilePath: /nodejs-qb/background/src/user/dto/query.dto.ts
  * @Description: 用户 查询dto
  */
-import { ApiProperty } from '@nestjs/swagger';
-import { FindOptionsOrder } from 'typeorm';
-import { IsOptional, IsObject, IsInt, Min } from 'class-validator';
-import { User } from '../user.entity';
-import { Type } from 'class-transformer';
-import { QueryDto } from '@/common/dto/query.dto';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsOptional, IsObject, IsInt, Min } from 'class-validator'
+import { User } from '../entities/user.entity'
+import { Type } from 'class-transformer'
+import { QueryDto } from '@/common/dto/query.dto'
+import type { FindOptionsOrder } from 'typeorm'
 
 export class UserQueryDto extends QueryDto {
   @ApiProperty({
@@ -21,7 +21,7 @@ export class UserQueryDto extends QueryDto {
   })
   @IsOptional()
   @IsObject()
-  order?: FindOptionsOrder<User>;
+  order?: FindOptionsOrder<User>
 
   @ApiProperty({
     default: 1,
@@ -34,7 +34,7 @@ export class UserQueryDto extends QueryDto {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
-  page?: number = 1;
+  page?: number = 1
 
   @ApiProperty({
     default: 10,
@@ -47,5 +47,5 @@ export class UserQueryDto extends QueryDto {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
-  size?: number = 10;
+  size?: number = 10
 }

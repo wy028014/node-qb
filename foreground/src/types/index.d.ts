@@ -7,16 +7,16 @@
  * @Description: 默认类型定义
  */
 interface MetaInfo {
-  hidden?: boolean;
-  icon?: string;
-  name?: string;
-  layout?: string;
+  hidden?: boolean
+  icon?: string
+  name?: string
+  layout?: string
 }
 
 interface ApiResponse<T = unknown> {
-  data?: T;
-  message: string;
-  statusCode: number;
-  success: boolean;
-  timestamp?: string;
+  data?: T
+  message: string
+  statusCode: number
+  success: boolean
+  timestamp?: string
 }

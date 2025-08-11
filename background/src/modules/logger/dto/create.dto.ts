@@ -6,15 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/modules/logger/dto/create.dto.ts
  * @Description: 操作记录 新增dto
  */
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsOptional,
-  IsObject,
-  IsDate,
-  IsBoolean,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsString, IsOptional, IsObject, IsDate, IsBoolean } from 'class-validator'
+import { Type } from 'class-transformer'
 
 export class LoggerCreateDto {
   @ApiPropertyOptional({
@@ -24,7 +18,7 @@ export class LoggerCreateDto {
   })
   @IsOptional()
   @IsString()
-  userId?: string;
+  userId?: string
 
   @ApiProperty({
     description: `路由, 例如 /api/users`,
@@ -32,7 +26,7 @@ export class LoggerCreateDto {
     type: String,
   })
   @IsString()
-  route: string = ``;
+  route: string = ``
 
   @ApiProperty({
     description: `请求方法, 例如 GET, POST`,
@@ -40,7 +34,7 @@ export class LoggerCreateDto {
     type: String,
   })
   @IsString()
-  accessMethod: string = `GET`;
+  accessMethod: string = `GET`
 
   @ApiPropertyOptional({
     description: `请求参数, 例如 { id: 1 }`,
@@ -48,7 +42,7 @@ export class LoggerCreateDto {
   })
   @IsOptional()
   @IsObject()
-  accessParams?: Record<string, unknown>;
+  accessParams?: Record<string, unknown>
 
   @ApiPropertyOptional({
     description: `响应数据, 例如 { id: 1 }`,
@@ -56,7 +50,7 @@ export class LoggerCreateDto {
   })
   @IsOptional()
   @IsObject()
-  responseData?: Record<string, unknown>;
+  responseData?: Record<string, unknown>
 
   @ApiPropertyOptional({
     description: `错误信息, 例如 404 Not Found`,
@@ -64,7 +58,7 @@ export class LoggerCreateDto {
   })
   @IsOptional()
   @IsString()
-  error?: string;
+  error?: string
 
   @ApiProperty({
     description: `请求时间, 例如 ${new Date().toISOString()}`,
@@ -72,7 +66,7 @@ export class LoggerCreateDto {
   })
   @Type(() => Date)
   @IsDate()
-  accessTime: Date = new Date();
+  accessTime: Date = new Date()
 
   @ApiPropertyOptional({
     description: `响应时间, 例如 ${new Date().toISOString()}`,
@@ -81,22 +75,22 @@ export class LoggerCreateDto {
   @Type(() => Date)
   @IsOptional()
   @IsDate()
-  responseTime?: Date;
+  responseTime?: Date
 
   @ApiPropertyOptional({ description: `是否成功, 例如 true`, example: true })
   @IsOptional()
   @IsBoolean()
-  isSuccess?: boolean;
+  isSuccess?: boolean
 
   @ApiPropertyOptional({
     description: `User-Agent header, 例如 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`,
   })
   @IsOptional()
   @IsString()
-  userAgent?: string;
+  userAgent?: string
 
   @ApiPropertyOptional({ description: `客户端IP地址, 例如 127.0.0.1` })
   @IsOptional()
   @IsString()
-  ip?: string;
+  ip?: string
 }

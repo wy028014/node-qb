@@ -12,8 +12,8 @@
   >
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, getCurrentInstance } from "vue";
-const instance: ComponentInternalInstance | null = getCurrentInstance();
-const $dayjs = instance!.appContext.config.globalProperties.$dayjs;
+import { ComponentInternalInstance, getCurrentInstance } from 'vue'
+const instance: ComponentInternalInstance | null = getCurrentInstance()
+const $dayjs = instance!.appContext.config.globalProperties.$dayjs
 </script>
 <style scoped></style>

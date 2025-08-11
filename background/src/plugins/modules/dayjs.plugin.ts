@@ -6,20 +6,20 @@
  * @FilePath: /nodejs-qb/background/src/plugins/modules/dayjs.plugin.ts
  * @Description: 插件 日期时间
  */
-import dayjs from 'dayjs';
-import isLeapYear from 'dayjs/plugin/isLeapYear';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import utc from 'dayjs/plugin/utc';
-import 'dayjs/locale/zh-cn';
+import dayjs from 'dayjs'
+import isLeapYear from 'dayjs/plugin/isLeapYear'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import utc from 'dayjs/plugin/utc'
+import 'dayjs/locale/zh-cn'
 
 // 扩展 dayjs 功能
-dayjs.extend(isLeapYear);
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.locale(`zh-cn`);
+dayjs.extend(isLeapYear)
+dayjs.extend(relativeTime)
+dayjs.extend(utc)
+dayjs.locale(`zh-cn`)
 
 // 导出格式化后的 dayjs 实例
-export const Dayjs = dayjs;
+export const Dayjs = dayjs
 
 /**
  * 格式化日期为 `YYYY-MM-DD HH:mm:ss.SSSS` 格式
@@ -27,7 +27,7 @@ export const Dayjs = dayjs;
  * @returns 格式化字符串
  */
 export function formatDate(date: Date | string | number): string {
-  return dayjs(date).format(`YYYY-MM-DD HH:mm:ss.SSSS`);
+  return dayjs(date).format(`YYYY-MM-DD HH:mm:ss.SSSS`)
 }
 
 /**
@@ -38,16 +38,14 @@ export function formatDate(date: Date | string | number): string {
  */
 export function func_getAgeFromIdCard(idCardNumber: string): number {
   if (idCardNumber.length !== 18) {
-    throw new Error(
-      `输入的身份证号码 ${idCardNumber} 长度不为18位, 必须是18位身份证号码`,
-    );
+    throw new Error(`输入的身份证号码 ${idCardNumber} 长度不为18位, 必须是18位身份证号码`)
   }
-  const birthDateStr: string = idCardNumber.substring(6, 14);
-  const birthDate: dayjs.Dayjs = dayjs(birthDateStr, `YYYYMMDD`);
-  const today: dayjs.Dayjs = dayjs.utc().local();
-  const age: number = today.diff(birthDate, `years`);
+  const birthDateStr: string = idCardNumber.substring(6, 14)
+  const birthDate: dayjs.Dayjs = dayjs(birthDateStr, `YYYYMMDD`)
+  const today: dayjs.Dayjs = dayjs.utc().local()
+  const age: number = today.diff(birthDate, `years`)
 
-  return parseInt(age.toString(), 10);
+  return parseInt(age.toString(), 10)
 }
 
 /**
@@ -55,5 +53,5 @@ export function func_getAgeFromIdCard(idCardNumber: string): number {
  * @returns 格式化字符串
  */
 export function now(): string {
-  return dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+  return dayjs().format(`YYYY-MM-DD HH:mm:ss`)
 }

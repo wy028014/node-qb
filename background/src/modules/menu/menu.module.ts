@@ -2,16 +2,16 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:24:09
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-09 07:54:44
+ * @LastEditTime: 2025-08-11 15:51:24
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.module.ts
  * @Description: 菜单 模块
  */
-import { CustomLogger } from '@/plugins';
-import { Menu } from './menu.entity';
-import { MenuController } from './menu.controller';
-import { MenuService } from './menu.service';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { CustomLogger } from '@/plugins'
+import { Menu } from './entities/menu.entity'
+import { MenuController } from './menu.controller'
+import { MenuService } from './menu.service'
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
   controllers: [MenuController],

@@ -6,7 +6,12 @@
     v-model="GenderData.value"
     @change="func_change"
   >
-    <el-option v-for="item in GenderData.options" :key="item.value" :label="item.label" :value="item.value" />
+    <el-option
+      v-for="item in GenderData.options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
+    />
   </el-select>
 </template>
 <script setup lang="ts">

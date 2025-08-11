@@ -2,11 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:19:56
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-08 08:52:29
+ * @LastEditTime: 2025-08-11 15:50:57
  * @FilePath: /nodejs-qb/background/src/modules/menu/menu.entity.ts
  * @Description: 菜单 实体
  */
-import { baseEntity } from '@/common/entities/base.entity';
+import { baseEntity } from '@/common/entities/base.entity'
 import {
   Entity,
   Column,
@@ -15,18 +15,18 @@ import {
   ManyToOne,
   Unique,
   Index,
-} from 'typeorm';
-import { User2menu } from '@/modules/user2menu/user2menu.entity';
-import { Max, Min } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+} from 'typeorm'
+import { User2menu } from '@/modules/user2menu/entities/user2menu.entity'
+import { Max, Min } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 
 @Entity()
 @Unique(['parentId', 'order']) // 同一父菜单下，order 不能重复
 export class Menu extends baseEntity {
   @ApiProperty({ description: `菜单的id` })
   @PrimaryGeneratedColumn(`uuid`)
-  id: string;
+  id: string
 
   @ApiProperty({ description: `菜单的图标`, example: `icon-menu` })
   @Column({
@@ -37,7 +37,7 @@ export class Menu extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  icon: string | null;
+  icon: string | null
 
   @ApiProperty({ description: `菜单的名称`, example: `Management` })
   @Column({
@@ -47,7 +47,7 @@ export class Menu extends baseEntity {
     type: `varchar`,
     unique: true,
   })
-  name: string;
+  name: string
 
   @ApiProperty({
     description: `菜单的排序, 越小越靠前, 范围是 0000 ~ 9999`,
@@ -62,13 +62,10 @@ export class Menu extends baseEntity {
   })
   @Min(1)
   @Max(9999)
-  @Transform(
-    ({ value }: { value: number }) => value.toString().padStart(4, `0`),
-    {
-      toPlainOnly: true,
-    },
-  )
-  order: number;
+  @Transform(({ value }: { value: number }) => value.toString().padStart(4, `0`), {
+    toPlainOnly: true,
+  })
+  order: number
 
   @ApiProperty({ description: `父级菜单ID(一级菜单为 null)`, required: false })
   @Column({
@@ -79,7 +76,7 @@ export class Menu extends baseEntity {
     unique: false,
   })
   @Index()
-  parentId: string | null;
+  parentId: string | null
 
   @ApiProperty({ description: `前端路由路径`, example: `/dashboard` })
   @Column({
@@ -89,7 +86,7 @@ export class Menu extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  path: string;
+  path: string
 
   @ApiProperty({ description: `菜单标题`, example: `仪表盘` })
   @Column({
@@ -99,25 +96,25 @@ export class Menu extends baseEntity {
     type: `varchar`,
     unique: false,
   })
-  title: string;
+  title: string
 
   @ApiProperty({ description: `是否启用`, example: true })
   @Column({ type: `boolean`, default: true })
-  isEnabled: boolean;
+  isEnabled: boolean
 
   @ApiProperty({ description: `菜单层级(自动计算, 可选)`, example: 1 })
   @Column({ type: `int`, default: 1 })
-  level: number;
+  level: number
 
-  @OneToMany(() => Menu, (menu) => menu.parent, { cascade: true })
-  children: Menu[];
+  @OneToMany(() => Menu, menu => menu.parent, { cascade: true })
+  children: Menu[]
 
-  @ManyToOne(() => Menu, (menu) => menu.children, {
+  @ManyToOne(() => Menu, menu => menu.children, {
     onDelete: `SET NULL`,
     nullable: true,
   })
-  parent: Menu;
+  parent: Menu
 
-  @OneToMany(() => User2menu, (user2menu) => user2menu.menu)
-  user2menus: User2menu[];
+  @OneToMany(() => User2menu, user2menu => user2menu.menu)
+  user2menus: User2menu[]
 }

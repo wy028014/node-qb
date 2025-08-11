@@ -6,29 +6,24 @@
  * @FilePath: /node-qb/foreground/src/api/modules/menu.api.ts
  * @Description: 菜单 api
  */
-import api from "@/api";
+import api from '@/api'
 
 export const MenuApi = {
   async create(
-    payload: MenuCreateDto[]
+    payload: MenuCreateDto[],
   ): Promise<ApiResponse<{ success: ResMenu[]; fail: MenuCreateDto[] }>> {
-    return api.post(`/menu`, payload);
+    return api.post(`/menu`, payload)
   },
 
-  async query(
-    params: MenuQueryDto
-  ): Promise<ApiResponse<{ list: ResMenu[]; total: number }>> {
-    return api.get(`/menu?${params}`);
+  async query(params: MenuQueryDto): Promise<ApiResponse<{ list: ResMenu[]; total: number }>> {
+    return api.get(`/menu?${params}`)
   },
 
-  async update(
-    id: string,
-    payload: MenuUpdateDto
-  ): Promise<ApiResponse<ResMenu>> {
-    return api.patch(`/menu/${id}`, payload);
+  async update(id: string, payload: MenuUpdateDto): Promise<ApiResponse<ResMenu>> {
+    return api.patch(`/menu/${id}`, payload)
   },
 
   async delete(id: string): Promise<ApiResponse<null>> {
-    return api.delete(`/menu/${id}`);
+    return api.delete(`/menu/${id}`)
   },
-};
+}

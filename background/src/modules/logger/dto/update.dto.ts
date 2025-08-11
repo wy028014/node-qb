@@ -6,15 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/modules/logger/dto/update.dto.ts
  * @Description: 操作记录 更新dto
  */
-import {
-  IsBoolean,
-  IsDate,
-  IsObject,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { IsBoolean, IsDate, IsObject, IsOptional, IsString } from 'class-validator'
+import { ApiPropertyOptional } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 
 export class LoggerUpdateDto {
   @ApiPropertyOptional({
@@ -23,7 +17,7 @@ export class LoggerUpdateDto {
   })
   @IsOptional()
   @IsObject()
-  responseData?: Record<string, unknown> | null;
+  responseData?: Record<string, unknown> | null
 
   @ApiPropertyOptional({
     description: `错误信息, 例如 404 Not Found`,
@@ -31,7 +25,7 @@ export class LoggerUpdateDto {
   })
   @IsOptional()
   @IsString()
-  error?: string | null;
+  error?: string | null
 
   @ApiPropertyOptional({
     description: `响应时间, 格式: ISO 字符串`,
@@ -40,7 +34,7 @@ export class LoggerUpdateDto {
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  responseTime?: Date;
+  responseTime?: Date
 
   @ApiPropertyOptional({
     description: `是否成功, true 表示成功, false 表示失败`,
@@ -48,5 +42,5 @@ export class LoggerUpdateDto {
   })
   @IsOptional()
   @IsBoolean()
-  isSuccess?: boolean;
+  isSuccess?: boolean
 }

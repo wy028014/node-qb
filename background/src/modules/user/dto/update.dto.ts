@@ -6,14 +6,14 @@
  * @FilePath: /nodejs-qb/background/src/user/dto/update.dto.ts
  * @Description: 用户 更新dto
  */
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator'
 
 export class UserUpdateDto {
   @IsOptional()
   @IsString()
-  username?: string;
+  username?: string
 
   @IsOptional()
   @IsString()
-  password?: string;
+  password?: string
 }

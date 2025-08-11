@@ -6,15 +6,15 @@
  * @FilePath: /node-qb/foreground/src/main.ts
  * @Description: 项目入口文件
  */
-import { createApp } from "vue";
-import App from "@/App.vue";
-import pinia from "@/stores";
-import router from "@/router";
-import { Dayjs } from "@/plugins";
-import "element-plus/theme-chalk/index.css";
+import { createApp } from 'vue'
+import App from '@/App.vue'
+import pinia from '@/stores'
+import router from '@/router'
+import { Dayjs } from '@/plugins'
+import 'element-plus/theme-chalk/index.css'
 
-const app = createApp(App);
-app.config.globalProperties.$dayjs = Dayjs;
-app.use(pinia);
-app.use(router);
-app.mount(`#app`);
+const app = createApp(App)
+app.config.globalProperties.$dayjs = Dayjs
+app.use(pinia)
+app.use(router)
+app.mount(`#app`)

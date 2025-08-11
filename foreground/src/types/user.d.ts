@@ -7,33 +7,33 @@
  * @Description: 用户 接口
  */
 interface ViewUser {
-  id: string;
-  username: string;
-  password?: string;
-  user2menus?: User2menu[];
+  id: string
+  username: string
+  password?: string
+  user2menus?: User2menu[]
 }
 
 interface ResUser extends ViewUser, Timestamps {}
 
 interface UserCreateDto {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 interface UserQueryDto {
   equals?: {
-    username?: string;
-  };
+    username?: string
+  }
   like?: {
-    username?: string;
-  };
-  relations?: string[];
-  order?: Record<string, `ASC` | `DESC`>;
-  page?: number;
-  size?: number;
+    username?: string
+  }
+  relations?: string[]
+  order?: Record<string, `ASC` | `DESC`>
+  page?: number
+  size?: number
 }
 
 interface UserUpdateDto {
-  username?: string;
-  password?: string;
+  username?: string
+  password?: string
 }

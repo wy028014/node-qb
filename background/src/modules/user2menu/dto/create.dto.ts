@@ -7,8 +7,8 @@
  * @Description: 用户2菜单 新增dto
  */
 
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsString, IsUUID } from 'class-validator'
 
 export class User2menuCreateDto {
   @ApiProperty({
@@ -16,14 +16,14 @@ export class User2menuCreateDto {
     type: String,
   })
   @IsUUID()
-  userId: string = ``;
+  userId: string = ``
 
   @ApiProperty({
     description: `菜单ID`,
     type: String,
   })
   @IsUUID()
-  menuId: string = ``;
+  menuId: string = ``
 
   @ApiProperty({
     default: null,
@@ -33,5 +33,5 @@ export class User2menuCreateDto {
     required: false,
   })
   @IsString()
-  permission: string | null = null;
+  permission: string | null = null
 }

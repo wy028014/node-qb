@@ -1,7 +1,16 @@
 <template>
-  <el-select :loading="GonganchuData.loading" placeholder="请选择公安处..." v-model="GonganchuData.value"
-    @change="func_change">
-    <el-option v-for="item in GonganchuData.options" :key="item.value" :label="item.label" :value="item.value" />
+  <el-select
+    :loading="GonganchuData.loading"
+    placeholder="请选择公安处..."
+    v-model="GonganchuData.value"
+    @change="func_change"
+  >
+    <el-option
+      v-for="item in GonganchuData.options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
+    />
   </el-select>
 </template>
 <script setup lang="ts">

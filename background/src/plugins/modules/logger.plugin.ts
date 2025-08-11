@@ -6,32 +6,26 @@
  * @FilePath: /nodejs-qb/background/src/plugins/modules/logger.plugin.ts
  * @Description: 插件 日志
  */
-import { Logger, LogLevel } from '@nestjs/common';
-import { Dayjs } from '../';
+import { Logger, LogLevel } from '@nestjs/common'
+import { Dayjs } from '..'
 
 // 定义日志级别
-type LogLevelType = LogLevel | `all`;
+type LogLevelType = LogLevel | `all`
 
 export class CustomLogger {
-  private readonly logger: Logger = new Logger();
-  private logLevels: LogLevelType[] = [
-    `log`,
-    `error`,
-    `warn`,
-    `debug`,
-    `verbose`,
-  ];
+  private readonly logger: Logger = new Logger()
+  private logLevels: LogLevelType[] = [`log`, `error`, `warn`, `debug`, `verbose`]
 
   constructor(logLevels?: LogLevelType[]) {
     if (logLevels) {
       this.logLevels = logLevels.includes(`all`)
         ? [`log`, `error`, `warn`, `debug`, `verbose`]
-        : logLevels;
+        : logLevels
     }
   }
 
   private shouldLog(level: LogLevelType): boolean {
-    return this.logLevels.includes(level);
+    return this.logLevels.includes(level)
   }
 
   /**
@@ -40,8 +34,8 @@ export class CustomLogger {
    */
   log(message: string) {
     if (this.shouldLog(`log`)) {
-      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
-      this.logger.log(`${timestamp} | ${message}`);
+      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`)
+      this.logger.log(`${timestamp} | ${message}`)
     }
   }
 
@@ -52,8 +46,8 @@ export class CustomLogger {
    */
   error(message: string, trace?: string) {
     if (this.shouldLog(`error`)) {
-      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
-      this.logger.error(`${timestamp} | ${message}`, trace);
+      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`)
+      this.logger.error(`${timestamp} | ${message}`, trace)
     }
   }
 
@@ -63,8 +57,8 @@ export class CustomLogger {
    */
   warn(message: string) {
     if (this.shouldLog(`warn`)) {
-      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
-      this.logger.warn(`${timestamp} | ${message}`);
+      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`)
+      this.logger.warn(`${timestamp} | ${message}`)
     }
   }
 
@@ -74,8 +68,8 @@ export class CustomLogger {
    */
   debug(message: string) {
     if (this.shouldLog(`debug`)) {
-      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
-      this.logger.debug(`${timestamp} | ${message}`);
+      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`)
+      this.logger.debug(`${timestamp} | ${message}`)
     }
   }
 
@@ -85,8 +79,8 @@ export class CustomLogger {
    */
   verbose(message: string) {
     if (this.shouldLog(`verbose`)) {
-      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`);
-      this.logger.verbose(`${timestamp} | ${message}`);
+      const timestamp: string = Dayjs().format(`YYYY-MM-DD HH:mm:ss`)
+      this.logger.verbose(`${timestamp} | ${message}`)
     }
   }
 }

@@ -1,3 +1,11 @@
+<!--
+ * @Author: 王野 18545455617@163.com
+ * @Date: 2025-08-11 07:42:50
+ * @LastEditors: 王野 18545455617@163.com
+ * @LastEditTime: 2025-08-11 18:37:15
+ * @FilePath: /node-qb/foreground/src/layouts/components/aside.vue
+ * @Description: 布局组件 侧边栏
+-->
 <template>
   <el-aside width="18em" class="bg-#c0dcf7 h-full">
     <Logo></Logo>
@@ -6,30 +14,23 @@
         :collapse="collapsed"
         class="el-menu-vertical-demo"
         :default-active="activeMenuString"
-        :hover-background-color="#dfedfb"
-        background-color="#c0dcf7"
-        text-color="#303133"
-        active-text-color="#409EFF"
-        unique-opened
-        collapse-transition
-        router
+        :hover-background-color="'#dfedfb'"
+        :background-color="'#c0dcf7'"
+        :text-color="'#303133'"
+        :active-text-color="'#409EFF'"
+        :unique-opened="true"
+        :collapse-transition="true"
+        :router="true"
       >
         <template v-for="route in menuStore.menus" :key="route.path">
           <el-menu-item
-            v-if="
-              (!route.children || route.children.length === 0) &&
-              !route.meta!.hidden
-            "
+            v-if="(!route.children || route.children.length === 0) && !route.meta!.hidden"
             :index="route.path"
           >
-            <i :class="`ri-${route.meta!.icon}`" /><span>{{
-              route.meta!.title
-            }}</span>
+            <i :class="`ri-${route.meta!.icon}`" /><span>{{ route.meta!.title }}</span>
           </el-menu-item>
           <el-sub-menu
-            v-if="
-              route.children && route.children.length > 0 && !route.meta!.hidden
-            "
+            v-if="route.children && route.children.length > 0 && !route.meta!.hidden"
             :index="route.path"
             :model-value="openedMenus[route.path]"
             @update:model-value="handleSubMenuChange(route.path)"
@@ -38,14 +39,8 @@
               <i :class="`ri-${route.meta!.icon}`" />
               <span>{{ route.meta!.title }}</span>
             </template>
-            <template
-              v-for="childRoute in route.children"
-              :key="childRoute.path"
-            >
-              <el-menu-item
-                v-if="!childRoute.meta!.hidden"
-                :index="childRoute.path"
-              >
+            <template v-for="childRoute in route.children" :key="childRoute.path">
+              <el-menu-item v-if="!childRoute.meta!.hidden" :index="childRoute.path">
                 <i :class="`ri-${childRoute.meta!.icon}`" />
                 <span>{{ childRoute.meta!.title }}</span>
               </el-menu-item>
@@ -58,31 +53,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, ComputedRef, toRef } from "vue";
-import { useRoute } from "vue-router";
-import { useMenuStore } from "@/store";
-import Logo from "./logo.vue";
+import { ref, computed, ComputedRef, toRef } from 'vue'
+import { useRoute } from 'vue-router'
+import { useMenuStore } from '@/store'
+import Logo from './logo.vue'
 
-const collapsed = ref(false);
-const menuStore = useMenuStore();
-const route = useRoute();
+const collapsed = ref(false)
+const menuStore = useMenuStore()
+const route = useRoute()
 
 const activeMenu: ComputedRef<string> = computed(() => {
-  const { meta, path } = route;
+  const { meta, path } = route
   if (meta?.path) {
-    return String(meta.path);
+    return String(meta.path)
   }
-  return path;
-});
-const activeMenuString: string = toRef(activeMenu, `value`).value;
+  return path
+})
+const activeMenuString: string = toRef(activeMenu, `value`).value
 
 // 用于存储当前展开的菜单路径
-const openedMenus = ref<Record<string, boolean>>({});
+const openedMenus = ref<Record<string, boolean>>({})
 
 // 子菜单展开变化时的处理方法
 const handleSubMenuChange = (path: string) => {
-  openedMenus.value[path] = !openedMenus.value[path];
-};
+  openedMenus.value[path] = !openedMenus.value[path]
+}
 </script>
 
 <style scoped>
@@ -104,7 +99,7 @@ const handleSubMenuChange = (path: string) => {
   }
 }
 
-i[class^="ri-"] {
+i[class^='ri-'] {
   padding-right: 0.8em;
   scale: 1.6;
 }

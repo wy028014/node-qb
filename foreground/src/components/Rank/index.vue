@@ -7,7 +7,12 @@
     @change="func_change"
   >
     <el-option-group v-for="group in RankData.options" :key="group.label" :label="group.label">
-      <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value" />
+      <el-option
+        v-for="item in group.options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
     </el-option-group>
   </el-select>
 </template>

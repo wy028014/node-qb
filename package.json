@@ -2,10 +2,6 @@
   "name": "node-qb",
   "license": "UNLICENSED",
   "private": true,
-  "workspaces": [
-    "background",
-    "foreground"
-  ],
   "scripts": {
     "b": "yarn workspace background start:dev",
     "f": "yarn workspace foreground dev",

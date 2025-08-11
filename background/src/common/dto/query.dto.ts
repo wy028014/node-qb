@@ -6,9 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/common/dto/where.dto.ts
  * @Description: 查询 dto
  */
-import { IsOptional, IsObject, IsArray } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsObject, IsArray } from 'class-validator'
+import { Transform, Type } from 'class-transformer'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class QueryDto {
   @ApiProperty({
@@ -18,7 +18,7 @@ export class QueryDto {
   })
   @IsOptional()
   @IsObject()
-  equals?: Record<string, unknown>;
+  equals?: Record<string, unknown>
 
   @ApiProperty({
     description: `匹配字段查询`,
@@ -27,7 +27,7 @@ export class QueryDto {
   })
   @IsOptional()
   @IsObject()
-  like?: Record<string, string>;
+  like?: Record<string, string>
 
   @ApiProperty({
     description: `关联查询`,
@@ -38,12 +38,12 @@ export class QueryDto {
   @IsArray()
   @Transform(({ value }) => {
     if (value === undefined || value === null) {
-      return undefined;
+      return undefined
     }
     return Array.isArray(value)
-      ? value.filter((item) => typeof item === `string`)
-      : [value].filter((item) => typeof item === `string`);
+      ? value.filter(item => typeof item === `string`)
+      : [value].filter(item => typeof item === `string`)
   })
   @Type(() => String)
-  relations?: string[];
+  relations?: string[]
 }

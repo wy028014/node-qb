@@ -2,17 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:47:22
+ * @LastEditTime: 2025-08-11 15:49:32
  * @FilePath: /nodejs-qb/background/src/modules/user2menu/user2menu.controller.ts
  * @Description: 用户2菜单 控制层
  */
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
   Body,
   Controller,
@@ -27,15 +21,15 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
-import { CustomLogger } from '@/plugins';
-import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
-import { MyResDto } from '@/common/dto/response.dto';
-import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
-import { User2menu } from './user2menu.entity';
-import { User2menuCreateDto } from './dto/create.dto';
-import { User2menuService } from './user2menu.service';
-import { User2menuQueryDto } from './dto/query.dto';
+} from '@nestjs/common'
+import { CustomLogger } from '@/plugins'
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
+import { MyResDto } from '@/common/dto/response.dto'
+import { ResponseInterceptor } from '@/common/interceptors/response.interceptor'
+import { User2menu } from './entities/user2menu.entity'
+import { User2menuCreateDto } from './dto/create.dto'
+import { User2menuService } from './user2menu.service'
+import { User2menuQueryDto } from './dto/query.dto'
 
 @ApiTags(`用户2菜单`)
 @Controller(`user2menu`)
@@ -63,20 +57,15 @@ export class User2menuController {
     }),
   )
   async create(@Body() createDto: User2menuCreateDto[]): Promise<MyResDto> {
-    const {
-      success,
-      fail,
-    }: { success: User2menu[]; fail: User2menuCreateDto[] } =
-      await this.user2menuService.create(createDto);
-    this.logger.log(
-      `创建用户2菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`,
-    );
+    const { success, fail }: { success: User2menu[]; fail: User2menuCreateDto[] } =
+      await this.user2menuService.create(createDto)
+    this.logger.log(`创建用户2菜单: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`)
     return {
       data: { success, fail },
       message: `创建用户2菜单成功`,
       statusCode: HttpStatus.CREATED,
       success: true,
-    };
+    }
   }
 
   @Get()
@@ -146,13 +135,13 @@ export class User2menuController {
   )
   async find(@Query() query: User2menuQueryDto): Promise<MyResDto> {
     const { list, total }: { list: User2menu[]; total: number } =
-      await this.user2menuService.find(query);
+      await this.user2menuService.find(query)
     return {
       data: { list, total },
       message: `查询用户2菜单成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Delete(`:id`)
@@ -171,13 +160,13 @@ export class User2menuController {
     }),
   )
   async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-    await this.user2menuService.remove(id);
-    this.logger.log(`软删除用户2菜单成功, id: ${id}`);
+    await this.user2menuService.remove(id)
+    this.logger.log(`软删除用户2菜单成功, id: ${id}`)
     return {
       data: null,
       message: `用户2菜单删除成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 }

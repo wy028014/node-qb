@@ -2,17 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-10 14:07:40
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:38:26
+ * @LastEditTime: 2025-08-11 15:50:25
  * @FilePath: /nodejs-qb/background/src/modules/logger/logger.controller.ts
  * @Description: 操作记录 控制层
  */
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
   Controller,
   Get,
@@ -27,14 +21,14 @@ import {
   ParseUUIDPipe,
   Patch,
   Delete,
-} from '@nestjs/common';
-import { CustomLogger } from '@/plugins';
-import { Logger } from './logger.entity';
-import { LoggerCreateDto } from './dto/create.dto';
-import { LoggerQueryDto } from './dto/query.dto';
-import { LoggerService } from './logger.service';
-import { LoggerUpdateDto } from './dto/update.dto';
-import { MyResDto } from '@/common/dto/response.dto';
+} from '@nestjs/common'
+import { CustomLogger } from '@/plugins'
+import { Logger } from './entities/logger.entity'
+import { LoggerCreateDto } from './dto/create.dto'
+import { LoggerQueryDto } from './dto/query.dto'
+import { LoggerService } from './logger.service'
+import { LoggerUpdateDto } from './dto/update.dto'
+import { MyResDto } from '@/common/dto/response.dto'
 
 @ApiTags(`操作记录`)
 @Controller(`logger`)
@@ -62,16 +56,14 @@ export class LoggerController {
   )
   async create(@Body() createDto: LoggerCreateDto[]): Promise<MyResDto> {
     const { success, fail }: { success: Logger[]; fail: LoggerCreateDto[] } =
-      await this.loggerService.create(createDto);
-    this.logger.log(
-      `创建操作记录: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`,
-    );
+      await this.loggerService.create(createDto)
+    this.logger.log(`创建操作记录: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`)
     return {
       data: { success, fail },
       message: `创建操作记录成功`,
       statusCode: HttpStatus.CREATED,
       success: true,
-    };
+    }
   }
 
   @Get()
@@ -146,14 +138,13 @@ export class LoggerController {
     }),
   )
   async find(@Query() query: LoggerQueryDto): Promise<MyResDto> {
-    const { list, total }: { list: Logger[]; total: number } =
-      await this.loggerService.find(query);
+    const { list, total }: { list: Logger[]; total: number } = await this.loggerService.find(query)
     return {
       data: { list, total },
       message: `查询操作记录成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Patch(`:id`)
@@ -175,14 +166,14 @@ export class LoggerController {
     @Param(`id`, ParseUUIDPipe) id: number,
     @Body() updateDto: LoggerUpdateDto,
   ): Promise<MyResDto> {
-    const updated: Logger = await this.loggerService.update(id, updateDto);
-    this.logger.log(`更新操作记录成功, ID: ${id}`);
+    const updated: Logger = await this.loggerService.update(id, updateDto)
+    this.logger.log(`更新操作记录成功, ID: ${id}`)
     return {
       data: [updated],
       message: `操作记录更新成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Delete(`:id`)
@@ -201,13 +192,13 @@ export class LoggerController {
     }),
   )
   async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-    await this.loggerService.remove(id);
-    this.logger.log(`软删除操作记录成功, ID: ${id}`);
+    await this.loggerService.remove(id)
+    this.logger.log(`软删除操作记录成功, ID: ${id}`)
     return {
       data: null,
       message: `操作记录删除成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 }

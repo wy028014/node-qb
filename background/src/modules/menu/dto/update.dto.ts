@@ -6,19 +6,19 @@
  * @FilePath: /nodejs-qb/background/src/modules/menu/dto/update.dto.ts
  * @Description: 菜单 更新dto
  */
-import { IsOptional, IsString, IsNumber, Min, Max } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString, IsNumber, Min, Max } from 'class-validator'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 
 export class MenuUpdateDto {
   @ApiPropertyOptional({ description: `菜单图标`, example: `tool` })
   @IsOptional()
   @IsString()
-  icon?: string;
+  icon?: string
 
   @ApiPropertyOptional({ description: `菜单名称`, example: `Management` })
   @IsOptional()
   @IsString()
-  name?: string;
+  name?: string
 
   @ApiPropertyOptional({
     description: `排序字段，范围 0001 ~ 9999`,
@@ -28,7 +28,7 @@ export class MenuUpdateDto {
   @IsOptional()
   @Max(9999)
   @Min(1)
-  order?: number;
+  order?: number
 
   @ApiPropertyOptional({
     description: `父级菜单 ID`,
@@ -36,15 +36,15 @@ export class MenuUpdateDto {
   })
   @IsOptional()
   @IsString()
-  parentId?: string;
+  parentId?: string
 
   @ApiPropertyOptional({ description: `菜单路径`, example: `/management` })
   @IsOptional()
   @IsString()
-  path?: string;
+  path?: string
 
   @ApiPropertyOptional({ description: `菜单标题`, example: `平台管理` })
   @IsOptional()
   @IsString()
-  title?: string;
+  title?: string
 }

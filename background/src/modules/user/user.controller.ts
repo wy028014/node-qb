@@ -2,17 +2,11 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-05 09:31:08
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 15:39:37
+ * @LastEditTime: 2025-08-11 15:51:59
  * @FilePath: /nodejs-qb/background/src/modules/user/user.controller.ts
  * @Description: 用户 控制层
  */
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
   Controller,
   Get,
@@ -28,16 +22,16 @@ import {
   Patch,
   Delete,
   UseInterceptors,
-} from '@nestjs/common';
-import { CustomLogger } from '@/plugins';
-import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
-import { MyResDto } from '@/common/dto/response.dto';
-import { ResponseInterceptor } from '@/common/interceptors/response.interceptor';
-import { User } from './user.entity';
-import { UserCreateDto } from './dto/create.dto';
-import { UserQueryDto } from './dto/query.dto';
-import { UserService } from './user.service';
-import { UserUpdateDto } from './dto/update.dto';
+} from '@nestjs/common'
+import { CustomLogger } from '@/plugins'
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
+import { MyResDto } from '@/common/dto/response.dto'
+import { ResponseInterceptor } from '@/common/interceptors/response.interceptor'
+import { User } from '@/modules/user/entities/user.entity'
+import { UserCreateDto } from './dto/create.dto'
+import { UserQueryDto } from './dto/query.dto'
+import { UserService } from './user.service'
+import { UserUpdateDto } from './dto/update.dto'
 
 @ApiTags(`用户`)
 @Controller(`user`)
@@ -66,16 +60,14 @@ export class UserController {
   )
   async create(@Body() createDto: UserCreateDto[]): Promise<MyResDto> {
     const { success, fail }: { success: User[]; fail: UserCreateDto[] } =
-      await this.userService.create(createDto);
-    this.logger.log(
-      `创建用户: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`,
-    );
+      await this.userService.create(createDto)
+    this.logger.log(`创建用户: 成功 ${success.length}, 失败 ${createDto.length - fail.length}`)
     return {
       data: { success, fail },
       message: `创建用户完成`,
       statusCode: HttpStatus.CREATED,
       success: true,
-    };
+    }
   }
 
   @Get()
@@ -150,14 +142,13 @@ export class UserController {
     }),
   )
   async find(@Query() query: UserQueryDto): Promise<MyResDto> {
-    const { list, total }: { list: User[]; total: number } =
-      await this.userService.find(query);
+    const { list, total }: { list: User[]; total: number } = await this.userService.find(query)
     return {
       data: { list, total },
       message: `查询用户成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Patch(`:id`)
@@ -179,14 +170,14 @@ export class UserController {
     @Param(`id`, ParseUUIDPipe) id: string,
     @Body() updateDto: UserUpdateDto,
   ): Promise<MyResDto> {
-    const updated: User = await this.userService.update(id, updateDto);
-    this.logger.log(`更新用户成功, id: ${id}`);
+    const updated: User = await this.userService.update(id, updateDto)
+    this.logger.log(`更新用户成功, id: ${id}`)
     return {
       data: [updated],
       message: `用户更新成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 
   @Delete(`:id`)
@@ -205,13 +196,13 @@ export class UserController {
     }),
   )
   async remove(@Param(`id`, ParseUUIDPipe) id: string): Promise<MyResDto> {
-    await this.userService.remove(id);
-    this.logger.log(`软删除用户成功, id: ${id}`);
+    await this.userService.remove(id)
+    this.logger.log(`软删除用户成功, id: ${id}`)
     return {
       data: null,
       message: `用户删除成功`,
       statusCode: HttpStatus.OK,
       success: true,
-    };
+    }
   }
 }

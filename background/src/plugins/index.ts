@@ -6,10 +6,5 @@
  * @FilePath: /nodejs-qb/background/src/plugins/index.ts
  * @Description: 插件 主文件
  */
-export {
-  Dayjs,
-  formatDate,
-  func_getAgeFromIdCard,
-  now,
-} from './modules/dayjs.plugin';
-export { CustomLogger } from './modules/logger.plugin';
+export { Dayjs, formatDate, func_getAgeFromIdCard, now } from './modules/dayjs.plugin'
+export { CustomLogger } from './modules/logger.plugin'

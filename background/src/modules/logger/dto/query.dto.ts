@@ -2,16 +2,16 @@
  * @Author: 王野 18545455617@163.com
  * @Date: 2025-05-10 14:39:00
  * @LastEditors: 王野 18545455617@163.com
- * @LastEditTime: 2025-05-10 14:39:27
+ * @LastEditTime: 2025-08-11 14:46:54
  * @FilePath: /nodejs-qb/background/src/modules/logger/dto/query.dto.ts
  * @Description: 操作记录 查询dto
  */
-import { ApiProperty } from '@nestjs/swagger';
-import { FindOptionsOrder } from 'typeorm';
-import { IsOptional, IsObject, IsInt, Min } from 'class-validator';
-import { Logger } from '../logger.entity';
-import { Type } from 'class-transformer';
-import { QueryDto } from '@/common/dto/query.dto';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsOptional, IsObject, IsInt, Min } from 'class-validator'
+import { Logger } from '../entities/logger.entity'
+import { Type } from 'class-transformer'
+import { QueryDto } from '@/common/dto/query.dto'
+import type { FindOptionsOrder } from 'typeorm'
 
 export class LoggerQueryDto extends QueryDto {
   @ApiProperty({
@@ -22,7 +22,7 @@ export class LoggerQueryDto extends QueryDto {
   })
   @IsOptional()
   @IsObject()
-  order?: FindOptionsOrder<Logger>;
+  order?: FindOptionsOrder<Logger>
 
   @ApiProperty({
     default: 1,
@@ -35,7 +35,7 @@ export class LoggerQueryDto extends QueryDto {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
-  page?: number = 1;
+  page?: number = 1
 
   @ApiProperty({
     default: 10,
@@ -48,5 +48,5 @@ export class LoggerQueryDto extends QueryDto {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
-  size?: number = 10;
+  size?: number = 10
 }

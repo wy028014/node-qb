@@ -1,16 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
   "compilerOptions": {
-    "assets": ["**/*.json"],
-    "deleteOutDir": true,
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "tsConfigPath": "tsconfig.json",
-    "watchAssets": true
+    "deleteOutDir": true
   },
-  "generateOptions": {
-    "spec": false
-  },
-  "sourceRoot": "src"
+  "generateOptions": { "spec": false }
 }

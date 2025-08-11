@@ -6,31 +6,26 @@
  * @FilePath: /node-qb/foreground/src/api/modules/user2menu.api.ts
  * @Description: 用户2菜单 api
  */
-import api from "@/api";
+import api from '@/api'
 
 export const User2menuApi = {
   async create(
-    payload: User2menuCreateDto[]
-  ): Promise<
-    ApiResponse<{ success: ResUser2menu[]; fail: User2menuCreateDto[] }>
-  > {
-    return api.post(`/user2menu`, payload);
+    payload: User2menuCreateDto[],
+  ): Promise<ApiResponse<{ success: ResUser2menu[]; fail: User2menuCreateDto[] }>> {
+    return api.post(`/user2menu`, payload)
   },
 
   async query(
-    params: User2menuQueryDto
+    params: User2menuQueryDto,
   ): Promise<ApiResponse<{ list: ResUser2menu[]; total: number }>> {
-    return api.get(`/user2menu?${params}`);
+    return api.get(`/user2menu?${params}`)
   },
 
-  async update(
-    id: string,
-    payload: User2menuUpdateDto
-  ): Promise<ApiResponse<ResUser2menu>> {
-    return api.patch(`/user2menu/${id}`, payload);
+  async update(id: string, payload: User2menuUpdateDto): Promise<ApiResponse<ResUser2menu>> {
+    return api.patch(`/user2menu/${id}`, payload)
   },
 
   async delete(id: string): Promise<ApiResponse<null>> {
-    return api.delete(`/user2menu/${id}`);
+    return api.delete(`/user2menu/${id}`)
   },
-};
+}

@@ -6,9 +6,9 @@
  * @FilePath: /nodejs-qb/background/src/user/dto/create.dto.ts
  * @Description: 用户 新增dto
  */
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
-import { v4 as uuidv4 } from 'uuid';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsString, IsUUID } from 'class-validator'
+import { v4 as uuidv4 } from 'uuid'
 
 export class UserCreateDto {
   @ApiProperty({
@@ -17,7 +17,7 @@ export class UserCreateDto {
     type: String,
   })
   @IsUUID()
-  username: string = uuidv4();
+  username: string = uuidv4()
 
   @ApiProperty({
     description: `用户的登录密码`,
@@ -25,5 +25,5 @@ export class UserCreateDto {
     type: String,
   })
   @IsString()
-  password: string = ``;
+  password: string = ``
 }
